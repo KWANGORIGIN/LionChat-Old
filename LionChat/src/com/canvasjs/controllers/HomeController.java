@@ -11,7 +11,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(ModelMap model) {
-		ModelAndView modelAndView = new ModelAndView("index");
+		ModelAndView modelAndView = new ModelAndView("Analytics/MultipleChartsInAPage");
 		modelAndView.addObject("title", "Home");
 		return modelAndView;
 	}
