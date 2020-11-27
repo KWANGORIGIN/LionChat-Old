@@ -1,0 +1,13 @@
+﻿Question,Intent
+what is the wifi password,itHelp
+how can i access the wifi,itHelp
+i need help setting up wifi on my device,itHelp
+how do i setup wifi for an iphone,itHelp
+what is there to do in erie,erieHelp
+where can i go get a drink,erieHelp
+what is presque isle,erieHelp
+where can i get chinese food,erieHelp
+where can i get mexican food in erie,erieHelp
+hi there,greetingIntent
+hello there,greetingIntent
+greetings,greetingIntent
