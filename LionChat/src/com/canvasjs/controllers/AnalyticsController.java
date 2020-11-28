@@ -1,18 +1,22 @@
 package com.canvasjs.controllers;
 
-import com.google.gson.Gson;
-
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import com.canvasjs.dao.DataPointsDAOImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.ui.ModelMap;
+
+import com.canvasjs.dao.DataPointsDAOImpl;
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value = "/view-analytics", method = RequestMethod.GET)
@@ -55,7 +59,7 @@ public class AnalyticsController {
 			list.add(map);
 		}
 		dataPoints1 = gsonObj.toJson(list);
-		
+
 		list = new ArrayList<Map<Object, Object>>();
 		for (int i = 0; i <= 1000; i++) {
 			yVal = (int) (yVal + Math.round(5 + Math.random() * (-5 - 5)));
@@ -65,7 +69,7 @@ public class AnalyticsController {
 			list.add(map);
 		}
 		dataPoints2 = gsonObj.toJson(list);
-		
+
 		ModelAndView modelAndView = new ModelAndView("Analytics/SyncMultipleCharts");
 		modelAndView.addObject("title", "Sync Multiple Charts");
 		modelAndView.addObject("dataPoints1", dataPoints1);
@@ -73,4 +77,9 @@ public class AnalyticsController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/get-intent", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void getIntent(@RequestBody String utterance) {
+		System.out.println(LionChat.getIntentString(utterance));	
+	}
 }
