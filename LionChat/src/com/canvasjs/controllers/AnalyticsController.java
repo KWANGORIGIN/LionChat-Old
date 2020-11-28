@@ -80,6 +80,6 @@ public class AnalyticsController {
 	@RequestMapping(value = "/get-intent", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void getIntent(@RequestBody String utterance) {
-		System.out.println(LionChat.getIntentString(utterance));	
+		System.out.println(LionChat.getInstance().getIntentString(utterance));	
 	}
 }
