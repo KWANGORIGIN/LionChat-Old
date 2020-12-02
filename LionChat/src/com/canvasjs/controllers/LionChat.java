@@ -21,7 +21,7 @@ public class LionChat {
 	
 
 	public LionChat() {
-	
+		// Setup Facebook messenger.
 		try {
 			messenger.verifyWebhook("subscribe", "VERIFY_TOKEN");
 			// ???
@@ -57,6 +57,14 @@ public class LionChat {
 		return lionChat;
 	}
 
+	/**
+	 * Get the intent of the user's question. This is the goal the user
+	 * wants to accomplish by asking a question.
+	 * 
+	 * Example: Help, my computer exploded! Intent: itHelp.
+	 * @param utterance The question the user asks.
+	 * @return The intent of the users question.
+	 * */
 	public String getIntentString(String utterance) {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
