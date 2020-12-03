@@ -1,4 +1,4 @@
-package com.canvasjs.controllers;
+package psu.lionchat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,9 +77,10 @@ public class AnalyticsController {
 		return modelAndView;
 	}
 
+	//TODO: Remove this once testing is done.
 	@RequestMapping(value = "/get-intent", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void getIntent(@RequestBody String utterance) {
-		System.out.println(LionChat.getInstance().getIntentString(utterance));	
+		System.out.println(LionChat.getInstance().getClassifier().getIntentString(utterance));	
 	}
 }
