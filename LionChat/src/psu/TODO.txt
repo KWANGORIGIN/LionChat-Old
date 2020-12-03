@@ -8,3 +8,7 @@
 - Update the methods in AnalyticsController to work with the new DAO and data points model.
 - Update the HOME/SETTINGS/ANALYTICS pages of the website to display the correct information.
 - Stuff I forgot (Probably a lot).
+
+
+- dispatcher-servlet.xml eventually remove com.canvasjs.controllers from component scan 
+	(once all controllers are moved to psu.lionchat or deleted)

@@ -1,4 +1,4 @@
-package psu.lionchat;
+package psu.lionchat.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.canvasjs.dao.DataPointsDAOImpl;
 import com.google.gson.Gson;
+
+import psu.lionchat.LionChat;
 
 @Controller
 @RequestMapping(value = "/view-analytics", method = RequestMethod.GET)
