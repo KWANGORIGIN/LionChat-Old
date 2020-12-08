@@ -13,7 +13,8 @@
 		<li>
 			<ul id="view-analytics" class="sub-menu collapse ${fn:contains(pageContext.request.requestURI,'view-analytics') ? 'in' : ''}">
 				<!-- Use the controller to specify which jsp to display -->
-				<li><a href="${pageContext.request.contextPath}/view-analytics/analytics">View Analytics</a></li>
+				<li><a href="${pageContext.request.contextPath}/view-analytics/overall-ratings">Overall Ratings</a></li>
+				<li><a href="${pageContext.request.contextPath}/view-analytics/intent-average-ratings">Intent Average Ratings</a></li>
 			</ul>
 		</li>
 		<!--  /analytics  -->

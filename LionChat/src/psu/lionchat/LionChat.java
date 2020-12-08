@@ -1,14 +1,18 @@
 package psu.lionchat;
 
-import java.time.Instant;
-import java.util.Optional;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.github.messenger4j.Messenger;
-import com.github.messenger4j.exception.MessengerVerificationException;
-import com.github.messenger4j.webhook.event.TextMessageEvent;
 
 import psu.lionchat.classifier.ClassifierIF;
 import psu.lionchat.classifier.MyNaiveBayesClassifier;
+import psu.lionchat.dao.LionChatDAOImpl;
 
 public class LionChat {
 	private final Messenger messenger = Messenger.create("PAGE_ACCESS_TOKEN", "APP_SECRET", "VERIFY_TOKEN");
