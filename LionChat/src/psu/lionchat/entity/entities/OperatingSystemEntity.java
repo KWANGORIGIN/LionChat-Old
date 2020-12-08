@@ -2,10 +2,10 @@ package psu.lionchat.entity.entities;
 
 import psu.lionchat.entity.Entity;
 
-public class UserOsEntity extends Entity {
+public class OperatingSystemEntity extends Entity {
 	protected String userOs;
-	
-	public UserOsEntity() {
+
+	public OperatingSystemEntity() {
 		this.entityName = "User OS";
 	}
 
@@ -17,5 +17,9 @@ public class UserOsEntity extends Entity {
 	@Override
 	public void setEntityInformation(String info) {
 		this.userOs = info;
+		this.hasInfo = true;
+
 	}
+
+
 }

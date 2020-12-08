@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import psu.lionchat.dao.*;
+import psu.lionchat.intent.Intent;
+import psu.lionchat.entity.*;
+
 import com.github.messenger4j.Messenger;
 
 import psu.lionchat.classifier.ClassifierIF;
@@ -18,9 +22,19 @@ public class LionChat {
 	private final Messenger messenger = Messenger.create("PAGE_ACCESS_TOKEN", "APP_SECRET", "VERIFY_TOKEN");
 	private static LionChat lionChat = new LionChat();
 	private final ClassifierIF classifier;
-	
+	private final LionChatDAO lionDAO;
+	private Intent userIntent;
+	private ConversationState convState;
+	private String document;
+	private boolean entitiesComplete;
+
 	public LionChat() {
 		classifier = new MyNaiveBayesClassifier();
+		lionDAO = new LionChatDAOImpl();
+		convState = ConversationState.INTENTSTATE;
+		document = "";
+
+
 		// Setup Facebook messenger.
 //		try {
 //			messenger.verifyWebhook("subscribe", "VERIFY_TOKEN");
@@ -53,6 +67,76 @@ public class LionChat {
 //		}
 	}
 
+	public void getResponse(String message)
+	{
+		if(this.convState == ConversationState.INTENTSTATE)
+		{
+			this.userIntent = this.classifier.classifyUserIntent(message);
+
+			this.convState = ConversationState.ENTITYSTATE;
+		}
+
+		if(this.convState == ConversationState.ENTITYSTATE)
+		{
+			if(this.getEntityInfoFromUser())
+			{
+				this.convState = ConversationState.RATINGSTATE;
+			}
+		}
+
+		if(this.convState == ConversationState.RATINGSTATE)
+		{
+
+			this.convState = ConversationState.INTENTSTATE;
+		}
+
+	}
+
+	public void sendResponse(String message)
+	{
+
+	}
+
+	public boolean getEntityInfoFromUser()
+	{
+		boolean hasAllEntities = true;
+		for(Entity e : this.userIntent.getEntities())
+		{
+			if(!(e.getHasInfo()))
+			{
+				hasAllEntities = false;
+				//get question
+				//input entity info
+				//send to setEntityInformation
+				//e.setEntityInformation(string);
+			}
+		}
+
+		return hasAllEntities;
+	}
+
+	public void sendDocument()
+	{
+
+	}
+
+
+	public void storeRating(Intent intent, int rating)
+	{
+
+	}
+
+	public ModelAndView getHomePage(ModelMap model)
+	{
+
+	}
+
+	public ModelAndView GetAnalyticsPage(ModelMap model)
+	{
+
+	}
+
+
 	public static LionChat getInstance() {
 		return lionChat;
 	}
@@ -60,4 +144,11 @@ public class LionChat {
 	public ClassifierIF getClassifier() {
 		return classifier;
 	}
+}
+
+enum ConversationState
+{
+	INTENTSTATE,
+	ENTITYSTATE,
+	RATINGSTATE;
 }

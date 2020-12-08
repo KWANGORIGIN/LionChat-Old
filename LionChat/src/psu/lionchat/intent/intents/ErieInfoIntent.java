@@ -2,8 +2,8 @@ package psu.lionchat.intent.intents;
 
 import psu.lionchat.intent.Intent;
 
-public class ErioInfoIntent extends Intent {
-	public ErioInfoIntent() {
+public class ErieInfoIntent extends Intent {
+	public ErieInfoIntent() {
 		super();
 		this.intentName = "Erie Info";
 	}

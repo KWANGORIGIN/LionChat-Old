@@ -6,7 +6,7 @@
  * 14 October 2020
  */
 
-package psu.lionchat.textProcessing;
+package psu.lionchat.classifier;
 
 import java.util.ArrayList;
 import java.util.Scanner;

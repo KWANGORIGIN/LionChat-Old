@@ -12,10 +12,17 @@ import com.google.gson.Gson;
 
 import psu.lionchat.intent.Intent;
 import psu.lionchat.intent.intents.CampusEventsIntent;
-import psu.lionchat.intent.intents.ErioInfoIntent;
+import psu.lionchat.intent.intents.ErieInfoIntent;
 import psu.lionchat.intent.intents.WifiAssistanceIntent;
 
 public class MyNaiveBayesClassifier implements ClassifierIF {
+
+	private PreProcessor preProcessor; //will preprocess the user's input, stemming & punctuation removal
+
+	public MyNaiveBayesClassifier()
+	{
+		preProcessor = new PreProcessor();
+	}
 
 	@Override
 	public String getIntentString(String utterance) {
@@ -36,6 +43,7 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 
 	@Override
 	public Intent classifyUserIntent(String utterance) {
+		utterance = this.preProcessor.process(utterance);
 		String intentString = this.getIntentString(utterance);
 		
 		// TODO: These are not the correct labels.
@@ -44,7 +52,11 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 		}else if(utterance.equals("CampusEventsIntent")) {
 			return new CampusEventsIntent();
 		}else if(utterance.equals("ErieInfoIntent")) {
+<<<<<<< HEAD
 			return new ErioInfoIntent();
+=======
+			return new ErieInfoIntent();
+>>>>>>> branch 'jake' of https://github.com/KWANGORIGIN/LionChat.git
 		}
 		
 		return null;
