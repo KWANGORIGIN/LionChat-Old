@@ -22,6 +22,7 @@ public class LionChat {
 	private Intent userIntent;
 	private ConversationState convState;
 	private String document;
+	private boolean entitiesComplete;
 
 	public LionChat() {
 		classifier = new MyNaiveBayesClassifier();
@@ -67,9 +68,24 @@ public class LionChat {
 		if(this.convState == ConversationState.INTENTSTATE)
 		{
 			this.userIntent = this.classifier.classifyUserIntent(message);
+
+			this.convState = ConversationState.ENTITYSTATE;
 		}
 
-		this.getEntityInfoFromUser();
+		if(this.convState == ConversationState.ENTITYSTATE)
+		{
+			if(this.getEntityInfoFromUser())
+			{
+				this.convState = ConversationState.RATINGSTATE;
+			}
+		}
+
+		if(this.convState == ConversationState.RATINGSTATE)
+		{
+
+			this.convState = ConversationState.INTENTSTATE;
+		}
+
 	}
 
 	public void sendResponse(String message)
@@ -77,15 +93,22 @@ public class LionChat {
 
 	}
 
-	public void getEntityInfoFromUser()
+	public boolean getEntityInfoFromUser()
 	{
+		boolean hasAllEntities = true;
 		for(Entity e : this.userIntent.getEntities())
 		{
-			//get question
-			//input entity info
-			//send to setEntityInformation
-			//e.setEntityInformation();
+			if(!(e.getHasInfo()))
+			{
+				hasAllEntities = false;
+				//get question
+				//input entity info
+				//send to setEntityInformation
+				//e.setEntityInformation(string);
+			}
 		}
+
+		return hasAllEntities;
 	}
 
 	public void sendDocument()
