@@ -17,6 +17,13 @@ import psu.lionchat.intent.intents.WifiAssistanceIntent;
 
 public class MyNaiveBayesClassifier implements ClassifierIF {
 
+	private PreProcessor preProcessor; //will preprocess the user's input, stemming & punctuation removal
+
+	public MyNaiveBayesClassifier()
+	{
+		preProcessor = new PreProcessor();
+	}
+
 	@Override
 	public String getIntentString(String utterance) {
 		RestTemplate restTemplate = new RestTemplate();
@@ -36,15 +43,16 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 
 	@Override
 	public Intent classifyUserIntent(String utterance) {
+		utterance = this.preProcessor.process(utterance);
 		String intentString = this.getIntentString(utterance);
 		
 		// TODO: These are not the correct labels.
-		if(utterance.equals("wifiAssistanceIntent")) {
+		if(utterance.equals("WifiAssistanceIntent")) {
 			return new WifiAssistanceIntent();
-		}else if(utterance.equals("campusEventsIntent")) {
+		}else if(utterance.equals("CampusEventsIntent")) {
 			return new CampusEventsIntent();
-		}else if(utterance.equals("erieInfoIntent")) {
-			return new ErioInfoIntent();
+		}else if(utterance.equals("ErieInfoIntent")) {
+			return new ErieInfoIntent();
 		}
 		
 		return null;
