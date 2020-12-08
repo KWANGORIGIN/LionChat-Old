@@ -1,22 +1,16 @@
 package psu.lionchat;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import psu.lionchat.dao.*;
-import psu.lionchat.intent.Intent;
-import psu.lionchat.entity.*;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.github.messenger4j.Messenger;
 
 import psu.lionchat.classifier.ClassifierIF;
 import psu.lionchat.classifier.MyNaiveBayesClassifier;
+import psu.lionchat.dao.LionChatDAO;
 import psu.lionchat.dao.LionChatDAOImpl;
+import psu.lionchat.entity.Entity;
+import psu.lionchat.intent.Intent;
 
 public class LionChat {
 	private final Messenger messenger = Messenger.create("PAGE_ACCESS_TOKEN", "APP_SECRET", "VERIFY_TOKEN");
@@ -128,12 +122,12 @@ public class LionChat {
 
 	public ModelAndView getHomePage(ModelMap model)
 	{
-
+		return null;
 	}
 
 	public ModelAndView GetAnalyticsPage(ModelMap model)
 	{
-
+		return null;
 	}
 
 

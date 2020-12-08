@@ -52,11 +52,7 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 		}else if(utterance.equals("CampusEventsIntent")) {
 			return new CampusEventsIntent();
 		}else if(utterance.equals("ErieInfoIntent")) {
-<<<<<<< HEAD
-			return new ErioInfoIntent();
-=======
 			return new ErieInfoIntent();
->>>>>>> branch 'jake' of https://github.com/KWANGORIGIN/LionChat.git
 		}
 		
 		return null;
