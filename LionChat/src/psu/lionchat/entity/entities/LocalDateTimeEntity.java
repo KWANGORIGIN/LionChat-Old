@@ -6,6 +6,11 @@ import psu.lionchat.entity.Entity;
 
 public class LocalDateTimeEntity extends Entity {
 	private LocalDateTime dateTime;
+
+	public LocalDateTimeEntity()
+	{
+		this.entityName = "dateTime";
+	}
 	@Override
 	public String getEntityInformation() {
 		return this.dateTime.toString();
@@ -14,6 +19,8 @@ public class LocalDateTimeEntity extends Entity {
 	@Override
 	public void setEntityInformation(String info) {
 		// select entity
+		this.hasInfo = true;
 	}
+
 
 }

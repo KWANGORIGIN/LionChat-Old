@@ -3,6 +3,10 @@ package psu.lionchat;
 import java.time.Instant;
 import java.util.Optional;
 
+import psu.lionchat.dao.*;
+import psu.lionchat.intent.Intent;
+import psu.lionchat.entity.*;
+
 import com.github.messenger4j.Messenger;
 import com.github.messenger4j.exception.MessengerVerificationException;
 import com.github.messenger4j.webhook.event.TextMessageEvent;
@@ -14,9 +18,18 @@ public class LionChat {
 	private final Messenger messenger = Messenger.create("PAGE_ACCESS_TOKEN", "APP_SECRET", "VERIFY_TOKEN");
 	private static LionChat lionChat = new LionChat();
 	private final ClassifierIF classifier;
-	
+	private final LionChatDAO lionDAO;
+	private Intent userIntent;
+	private ConversationState convState;
+	private String document;
+
 	public LionChat() {
 		classifier = new MyNaiveBayesClassifier();
+		lionDAO = new LionChatDAOImpl();
+		convState = ConversationState.INTENTSTATE;
+		document = "";
+
+
 		// Setup Facebook messenger.
 //		try {
 //			messenger.verifyWebhook("subscribe", "VERIFY_TOKEN");
@@ -49,6 +62,54 @@ public class LionChat {
 //		}
 	}
 
+	public void getResponse(String message)
+	{
+		if(this.convState == ConversationState.INTENTSTATE)
+		{
+			this.userIntent = this.classifier.classifyUserIntent(message);
+		}
+
+		this.getEntityInfoFromUser();
+	}
+
+	public void sendResponse(String message)
+	{
+
+	}
+
+	public void getEntityInfoFromUser()
+	{
+		for(Entity e : this.userIntent.getEntities())
+		{
+			//get question
+			//input entity info
+			//send to setEntityInformation
+			//e.setEntityInformation();
+		}
+	}
+
+	public void sendDocument()
+	{
+
+	}
+
+
+	public void storeRating(Intent intent, int rating)
+	{
+
+	}
+
+	public ModelAndView getHomePage(ModelMap model)
+	{
+
+	}
+
+	public ModelAndView GetAnalyticsPage(ModelMap model)
+	{
+
+	}
+
+
 	public static LionChat getInstance() {
 		return lionChat;
 	}
@@ -56,4 +117,11 @@ public class LionChat {
 	public ClassifierIF getClassifier() {
 		return classifier;
 	}
+}
+
+enum ConversationState
+{
+	INTENTSTATE,
+	ENTITYSTATE,
+	RATINGSTATE;
 }
