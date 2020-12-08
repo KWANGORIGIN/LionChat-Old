@@ -14,6 +14,7 @@ import psu.lionchat.intent.Intent;
 import psu.lionchat.intent.intents.CampusEventsIntent;
 import psu.lionchat.intent.intents.ErioInfoIntent;
 import psu.lionchat.intent.intents.WifiAssistanceIntent;
+import psu.lionchat.textProcessing.
 
 public class MyNaiveBayesClassifier implements ClassifierIF {
 
