@@ -73,9 +73,9 @@ public class LionChatDAOImpl implements LionChatDAO {
 					String OS = e.getEntityInformation();
 					String SQL = "";
 					if (OS.equals("windows")) {
-						SQL = "select * from lionchat.wifiassistancedocuments where os=windows";
+						SQL = "select * from lionchat.wifiassistancedocuments where os='windows'";
 					}else if(OS.equals("macos")) {
-						SQL = "select * from lionchat.wifiassistancedocuments where os=macos";
+						SQL = "select * from lionchat.wifiassistancedocuments where os='macos'";
 					}
 					List<String> strings = jdbcTemplateObject.query(SQL, new RowMapper<String>() {
 						@Override
