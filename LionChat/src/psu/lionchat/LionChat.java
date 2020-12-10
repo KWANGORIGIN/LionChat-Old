@@ -11,6 +11,7 @@ import psu.lionchat.dao.LionChatDAO;
 import psu.lionchat.dao.LionChatDAOImpl;
 import psu.lionchat.entity.Entity;
 import psu.lionchat.intent.Intent;
+import psu.lionchat.intent.intents.ErieInfoIntent;
 import psu.lionchat.intent.intents.GreetingIntent;
 
 public class LionChat {
@@ -35,6 +36,12 @@ public class LionChat {
 		if(this.convState == ConversationState.INTENTSTATE) //if IntentState, classify
 		{
 			this.userIntent = this.classifier.classifyUserIntent(message);
+
+			if(this.userIntent instanceof GreetingIntent)
+			{
+				sendResponse("Hello there!");
+				return;
+			}
 
 			this.convState = ConversationState.ENTITYSTATE;
 			message = null; //set message to null for use in getEntityInfo()
@@ -148,28 +155,30 @@ public class LionChat {
 
 
 		this.convState = ConversationState.SUCCESSSTATE;
-		this.document = this.lionDAO.getDocumentFromIntent(this.userIntent);
+		getAnswer(this.userIntent, message);
 		sendResponse(this.document);
 		message = null;
-
-		if(this.userIntent instanceof GreetingIntent)
-		{
-			this.convState = ConversationState.INTENTSTATE;
-		}
 
 		return message;
 	}
 
-	public void sendDocument()
-	{
-
-	}
-
-
 	public void storeRating(Intent intent, int rating)
 	{
-
+		this.lionDAO.addUserRating(intent, rating);
 	}
+
+	public void getAnswer(Intent intent, String message)
+	{
+		if(intent instanceof ErieInfoIntent)
+		{
+			this.document = ((ErieInfoIntent) intent).getURL() + message;
+		}
+		else
+		{
+			this.document = this.lionDAO.getDocumentFromIntent(intent);
+		}
+	}
+
 
 	public ModelAndView getHomePage(ModelMap model)
 	{

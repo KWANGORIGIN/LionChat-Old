@@ -14,9 +14,9 @@ what can i do for fun,CampusEventsIntent
 what event should i attend,CampusEventsIntent
 what activ should student particip in,CampusEventsIntent
 when i there someth fun happen,CampusEventsIntent
-hello,greetingIntent
-greet,greetingIntent
-hei,greetingIntent
-what up,greetingIntent
-hi there,greetingIntent
+hello,GreetingIntent
+greet,GreetingIntent
+hei,GreetingIntent
+what up,GreetingIntent
+hi there,GreetingIntent
 

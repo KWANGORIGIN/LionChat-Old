@@ -18,4 +18,10 @@ public abstract class Intent {
 	public List<Entity> getEntities() {
 		return entities;
 	}
+
+	@Override
+	public String toString()
+	{
+		return this.intentName;
+	}
 }
