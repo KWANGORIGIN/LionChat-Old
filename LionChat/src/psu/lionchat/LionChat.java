@@ -41,7 +41,7 @@ public class LionChat {
 
 		if(this.convState == ConversationState.ENTITYSTATE)
 		{
-			this.getEntityInfoFromUser(message);
+			message = this.getEntityInfoFromUser(message);
 		}
 
 		if(this.convState == ConversationState.SUCCESSSTATE)
@@ -57,31 +57,39 @@ public class LionChat {
 				}
 			}
 
-			if(message == "no")
+			if(message.equals("no"))
 			{
+
 				this.convState = ConversationState.INTENTSTATE;
 				message = null;
+
 				sendResponse("Please enter a question.");
 
 				return;
 				//wait for response
 			}
-			else if(message == "yes")
+			else if(message.equals("yes"))
 			{
 				this.convState = ConversationState.RATINGSTATE;
 				message = null;
 			}
-
-
+			else
+			{
+				sendResponse("Please enter yes or no");
+				return;
+			}
 		}
 
 		if(this.convState == ConversationState.RATINGSTATE)
 		{
-			sendResponse("How would you rate your LionChat experience, 1 to 5 stars?");
 
-			if(true)
+			if(message == null)
 			{
-				return;
+				sendResponse("How would you rate your LionChat experience, 1 to 5 stars?");
+
+				if (true) {
+					return;
+				}
 			}
 
 			//wait for rating
@@ -97,6 +105,7 @@ public class LionChat {
 
 			storeRating(this.userIntent, rating);
 			this.convState = ConversationState.INTENTSTATE;
+
 
 			//maybe an goodbye message?
 		}
