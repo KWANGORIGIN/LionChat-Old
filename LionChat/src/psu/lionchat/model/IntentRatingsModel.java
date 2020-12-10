@@ -1,6 +1,6 @@
 package psu.lionchat.model;
 
-public class DataPointsModel {
+public class IntentRatingsModel {
 	private String intent;
 	private int rating;
 

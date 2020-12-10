@@ -1,11 +1,16 @@
 package psu.lionchat.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import psu.lionchat.entity.Entity;
 import psu.lionchat.entity.entities.DateTimeEntity;
@@ -14,8 +19,8 @@ import psu.lionchat.intent.Intent;
 import psu.lionchat.intent.intents.CampusEventsIntent;
 import psu.lionchat.intent.intents.ErieInfoIntent;
 import psu.lionchat.intent.intents.WifiAssistanceIntent;
-import psu.lionchat.model.DataPointsModel;
-import psu.lionchat.service.DataPointsMapper;
+import psu.lionchat.model.IntentRatingsModel;
+import psu.lionchat.service.IntentRatingsMapper;
 
 public class LionChatDAOImpl implements LionChatDAO {
 	// TODO: Bind this with a bean.
@@ -24,9 +29,9 @@ public class LionChatDAOImpl implements LionChatDAO {
 	private JdbcTemplate jdbcTemplateObject;
 
 	@Override
-	public List<DataPointsModel> getRatings() {
+	public List<IntentRatingsModel> getRatings() {
 		String SQL = "select * from lionchat.reviews";
-		List<DataPointsModel> dataPoints = jdbcTemplateObject.query(SQL, new DataPointsMapper());
+		List<IntentRatingsModel> dataPoints = jdbcTemplateObject.query(SQL, new IntentRatingsMapper());
 		return dataPoints;
 	}
 
@@ -37,30 +42,61 @@ public class LionChatDAOImpl implements LionChatDAO {
 
 	@Override
 	public String getDocumentFromIntent(Intent intent) {
-		if(intent instanceof CampusEventsIntent) {
-			for(Entity e : intent.getEntities()) {
-				if(e instanceof DateTimeEntity dateTimeEntity) {
-					Timestamp timeStamp = dateTimeEntity.getTimestamp();
-					// get events within an hour from database.
+		if (intent instanceof CampusEventsIntent) {
+			for (Entity e : intent.getEntities()) {
+				if (e instanceof DateTimeEntity dateTimeEntity) {
+					Timestamp after = dateTimeEntity.getTimestamp();
+					Timestamp before = Timestamp.valueOf(dateTimeEntity.getTimestamp().toLocalDateTime().plusDays(1));
+					String SQL = "SELECT description FROM lionchat.reviews WHERE starttime between " + after + " and "
+							+ before + " and status == CONFIRMED";
+
+					List<String> strings = jdbcTemplateObject.query(SQL, new RowMapper<String>() {
+						@Override
+						public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+							Timestamp starttime = rs.getTimestamp("starttime");
+							long duration = rs.getTimestamp("endtime").getTime() - starttime.getTime();
+							long minutes = duration / 1000 / 60;
+							return String.format("%s\n Starts: %s Duration: %d\nLocation: %s\nDescription %s\n",
+									rs.getString("summary"), starttime, minutes, rs.getString("location"),
+									rs.getString("description"));
+						}
+					});
+
+					return strings.stream().collect(Collectors.joining("\n\n"));
 				}
 			}
-		}else if (intent instanceof ErieInfoIntent) {
+		} else if (intent instanceof ErieInfoIntent) {
 			// just return a url.
-		}else if (intent instanceof WifiAssistanceIntent) {
-			for(Entity e: intent.getEntities()) {
-				if(e instanceof OperatingSystemEntity) {
+		} else if (intent instanceof WifiAssistanceIntent) {
+			for (Entity e : intent.getEntities()) {
+				if (e instanceof OperatingSystemEntity) {
 					String OS = e.getEntityInformation();
-					// get help from database
+					String SQL = "";
+					if (OS.equals("windows")) {
+						SQL = "select * from lionchat.wifiassistancedocuments where os=windows";
+					}else if(OS.equals("macos")) {
+						SQL = "select * from lionchat.wifiassistancedocuments where os=macos";
+					}
+					List<String> strings = jdbcTemplateObject.query(SQL, new RowMapper<String>() {
+						@Override
+						public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+							String s = rs.getString("asssistance");
+							return s;
+						}
+					});
+					return strings.get(0);
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
 	@Override
 	public void addUserRating(Intent intent, int rating) {
-		//String SQL = "insert into (" + intent.
+		String SQL = "insert into lionchat.reviews (" + intent.getClass().getSimpleName() + "Rating" + ") values ("
+				+ rating + ")";
+		jdbcTemplateObject.update(SQL);
 	}
 
 }

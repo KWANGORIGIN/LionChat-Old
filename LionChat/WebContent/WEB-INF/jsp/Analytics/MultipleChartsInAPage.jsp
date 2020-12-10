@@ -30,6 +30,10 @@ function enlarge(n) {
 }
 var chart = [null, null, null, null];
 $(function () {
+	function compareDataPointYDescending(dataPoint1, dataPoint2) {
+		return dataPoint2.y - dataPoint1.y;
+	}
+	
 	chart[0] = new CanvasJS.Chart("chartContainer1", {
         theme: "light2",
         animationEnabled: true,
@@ -49,6 +53,7 @@ $(function () {
             dataPoints: ${dataPoints1},
         }]
     });
+	chart[0].options.data[0].dataPoints.sort(compareDataPointYDescending);
 	chart[0].render();
 
 	chart[1] = new CanvasJS.Chart("chartContainer2", {
@@ -79,6 +84,7 @@ $(function () {
         }
         ]
     });
+	chart[1].options.data[0].dataPoints.sort(compareDataPointYDescending);
 	chart[1].render();
 
 	chart[2] = new CanvasJS.Chart("chartContainer3", {
@@ -99,6 +105,7 @@ $(function () {
             dataPoints: ${dataPoints3}
         }]
     });
+	chart[2].options.data[0].dataPoints.sort(compareDataPointYDescending);
 	chart[2].render();
 
 	chart[3] = new CanvasJS.Chart("chartContainer4", {
@@ -119,6 +126,7 @@ $(function () {
             dataPoints: ${dataPoints4}
         }]
     });
+	chart[3].options.data[0].dataPoints.sort(compareDataPointYDescending);
 	chart[3].render();
 });
 </script>

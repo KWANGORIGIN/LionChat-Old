@@ -6,11 +6,11 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import psu.lionchat.model.DataPointsModel;
+import psu.lionchat.model.IntentRatingsModel;
 
-public class DataPointsMapper implements RowMapper<DataPointsModel> {
-	public DataPointsModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-		DataPointsModel dpModel = new DataPointsModel();
+public class IntentRatingsMapper implements RowMapper<IntentRatingsModel> {
+	public IntentRatingsModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+		IntentRatingsModel dpModel = new IntentRatingsModel();
 		ResultSetMetaData meta = rs.getMetaData();
 		for(int i = 2; i <= meta.getColumnCount(); i++) {
 			String intent = meta.getColumnName(i);
@@ -18,7 +18,7 @@ public class DataPointsMapper implements RowMapper<DataPointsModel> {
 			if(rating == 0) {
 				continue;
 			}
-			dpModel.setIntent(intent);
+			dpModel.setIntent(intent.replace("IntentRating", ""));
 			dpModel.setRating(rating);
 			return dpModel;
 		}

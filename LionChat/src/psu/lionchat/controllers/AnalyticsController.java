@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.canvasjs.dao.DataPointsDAOImpl;
 import com.google.gson.Gson;
 
-import psu.lionchat.LionChat;
 import psu.lionchat.dao.LionChatDAO;
-import psu.lionchat.model.DataPointsModel;
+import psu.lionchat.intent.intents.CampusEventsIntent;
+import psu.lionchat.model.IntentRatingsModel;
 
 @Controller
 public class AnalyticsController {
@@ -113,7 +112,11 @@ public class AnalyticsController {
 	@RequestMapping(value = "/view-analytics/get-intent", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void getIntent(@RequestBody String utterance) {
-		System.out.println(LionChat.getInstance().getClassifier().getIntentString(utterance));
+		System.out.println(utterance);
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+		LionChatDAO dataPoints = (LionChatDAO) context.getBean("LionChatDAOImpl");
+		dataPoints.addUserRating(new CampusEventsIntent(), Integer.parseInt(utterance));
+//		System.out.println(LionChat.getInstance().getClassifier().getIntentString(utterance));
 	}
 
 //	@RequestMapping(value = "/test-database", method = RequestMethod.POST)
@@ -232,7 +235,7 @@ public class AnalyticsController {
 	private List<Object> getOverallRatingsMap(LionChatDAO dataPoints, AtomicInteger passedTotal) {
 		int total = 0;
 		Map<Integer, AtomicInteger> map = new HashMap<>();
-		for (DataPointsModel point : dataPoints.getRatings()) {
+		for (IntentRatingsModel point : dataPoints.getRatings()) {
 			if (map.containsKey(point.getRating())) {
 				map.get(point.getRating()).addAndGet(point.getRating());
 			} else {
@@ -260,7 +263,7 @@ public class AnalyticsController {
 	private List<Object> getAverageRatingsMap(LionChatDAO dataPoints) {
 		Map<String, AtomicInteger> totalStars = new HashMap<String, AtomicInteger>();
 		Map<String, AtomicInteger> totalRatings = new HashMap<String, AtomicInteger>();
-		for (DataPointsModel point : dataPoints.getRatings()) {
+		for (IntentRatingsModel point : dataPoints.getRatings()) {
 			String intent = point.getIntent();
 			int rating = point.getRating();
 
@@ -287,7 +290,7 @@ public class AnalyticsController {
 
 	private List<Object> getFrequenciesMap(LionChatDAO dataPoints) {
 		Map<String, AtomicInteger> frequencies = new HashMap<>();
-		for (DataPointsModel point : dataPoints.getRatings()) {
+		for (IntentRatingsModel point : dataPoints.getRatings()) {
 			String intent = point.getIntent();
 			if (frequencies.containsKey(intent)) {
 				frequencies.get(intent).incrementAndGet();
@@ -308,7 +311,7 @@ public class AnalyticsController {
 	
 	private List<Object> getCommonlyMisclassifiedIntentsMap(LionChatDAO dataPoints) {
 		Map<String, AtomicInteger> frequencies = new HashMap<>();
-		for (DataPointsModel point : dataPoints.getRatings()) {
+		for (IntentRatingsModel point : dataPoints.getRatings()) {
 			if (point.getRating() != 1) {
 				continue;
 			}
