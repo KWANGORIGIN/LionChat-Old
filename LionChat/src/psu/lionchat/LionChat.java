@@ -36,6 +36,12 @@ public class LionChat {
 		{
 			this.userIntent = this.classifier.classifyUserIntent(message);
 
+			if(this.userIntent instanceof GreetingIntent)
+			{
+				sendResponse("Hello there!");
+				return;
+			}
+
 			this.convState = ConversationState.ENTITYSTATE;
 			message = null; //set message to null for use in getEntityInfo()
 		}
@@ -151,11 +157,6 @@ public class LionChat {
 		this.document = this.lionDAO.getDocumentFromIntent(this.userIntent);
 		sendResponse(this.document);
 		message = null;
-
-		if(this.userIntent instanceof GreetingIntent)
-		{
-			this.convState = ConversationState.INTENTSTATE;
-		}
 
 		return message;
 	}
