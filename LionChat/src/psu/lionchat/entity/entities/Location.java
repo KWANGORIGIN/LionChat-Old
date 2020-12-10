@@ -8,6 +8,7 @@ public class Location extends Entity {
 	public Location()
 	{
 		this.entityName = "Location";
+		this.prompt = "Please enter the location you are interested in:";
 	}
 
 
@@ -21,7 +22,4 @@ public class Location extends Entity {
 		this.location = info;
 		this.hasInfo = true;
 	}
-
-
-
 }
