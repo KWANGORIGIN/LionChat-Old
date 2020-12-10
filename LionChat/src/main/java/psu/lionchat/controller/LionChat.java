@@ -23,6 +23,7 @@ import psu.lionchat.classifier.MyNaiveBayesClassifier;
 //import psu.lionchat.dao.LionChatDAOImpl;
 import psu.lionchat.entity.Entity;
 import psu.lionchat.intent.Intent;
+import psu.lionchat.intent.intents.GreetingIntent;
 
 import static com.github.messenger4j.Messenger.*;
 import static java.util.Optional.empty;
@@ -235,6 +236,11 @@ public class LionChat {
         this.document = "Big Yeet";
         sendResponse(this.document);
         message = null;
+
+        if(this.userIntent instanceof GreetingIntent)
+        {
+            this.convState = ConversationState.INTENTSTATE;
+        }
 
         return message;
     }
