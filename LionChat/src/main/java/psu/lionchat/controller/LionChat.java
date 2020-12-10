@@ -29,7 +29,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 @RestController
-@RequestMapping("/callback")
+@RequestMapping("/lionchat")
 public class LionChat {
 
     private final Messenger messenger;
@@ -55,6 +55,7 @@ public class LionChat {
                                                 @RequestParam(VERIFY_TOKEN_REQUEST_PARAM_NAME) final String verifyToken,
                                                 @RequestParam(CHALLENGE_REQUEST_PARAM_NAME) final String challenge){
         try {
+            System.out.println("Verifying Webhook");
             this.messenger.verifyWebhook(mode, verifyToken);
             return ResponseEntity.ok(challenge);
         } catch (MessengerVerificationException e) {

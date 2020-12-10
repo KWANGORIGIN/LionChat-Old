@@ -13,7 +13,7 @@ public class LionchatApplication {
 	public Messenger messenger(@Value("${messenger4j.pageAccessToken}") String pageAccessToken,
 							   @Value("${messenger4j.appSecret}") final String appSecret,
 							   @Value("${messenger4j.verifyToken}") final String verifyToken) {
-		return Messenger.create("EAADAZBEirnFQBAMClZAx4zUmPnjtBUmd7IIXSgczkKg9yiRydTCPcTRXZBLjg44VyuTHHvK8GNrQC1xUHR8HuXtM2iK1ZAPM6zC0hZCbXEhLhjXhzQ87cSwyAKweZCXxWJQZBXaj5ufqk9DhfZCpWFQOz8yAQEp8O2rzIWRmKMPyJwZDZD", "APP_SECRET", "VERIFY_TOKEN");
+		return Messenger.create(pageAccessToken, appSecret, verifyToken);
 	}
 
 	public static void main(String[] args) {
