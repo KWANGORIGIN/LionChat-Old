@@ -10,7 +10,7 @@ import psu.lionchat.model.DataPointsModel;
 public interface LionChatDAO {
 	
 	public List<DataPointsModel> getRatings();
-	public void setDataSource(DataSource sourse);
+	public void setDataSource(DataSource dataSource);
 	public String getDocumentFromIntent(Intent intent);
 	public void addUserRating(Intent intent, int rating);
 }
