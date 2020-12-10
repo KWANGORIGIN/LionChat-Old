@@ -24,11 +24,12 @@
                type: "pie",
                indexLabelFontFamily: "Garamond",
                indexLabelFontSize: 20,
-               indexLabel: "{label}\u2B50 {y}%",
+               indexLabel: "{label}\u2B50 (#percent%)",
                startAngle: -20,
                showInLegend: true,
-               toolTipContent: "{rating}\u2B50 {y}%",
+               toolTipContent: "{rating}\u2B50 (#percent%)",
                legendText: "{rating} \u2B50",
+               percentFormatString: "#0.##",
                dataPoints: ${dataPoints}
            }
            ]

@@ -15,6 +15,8 @@
 				<!-- Use the controller to specify which jsp to display -->
 				<li><a href="${pageContext.request.contextPath}/view-analytics/overall-ratings">Overall Ratings</a></li>
 				<li><a href="${pageContext.request.contextPath}/view-analytics/intent-average-ratings">Intent Average Ratings</a></li>
+				<li><a href="${pageContext.request.contextPath}/view-analytics/frequently-asked-questions">Frequently Asked Questions</a></li>
+				<li><a href="${pageContext.request.contextPath}/view-analytics/commonly-misclassified-intents">Commonly Misclassified Intent</a></li>
 			</ul>
 		</li>
 		<!--  /analytics  -->

@@ -25,7 +25,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.8.1</version><!--$NO-MVN-MAN-VER$-->
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -33,7 +33,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>3.2.3</version>
+				<version>3.2.3</version><!--$NO-MVN-MAN-VER$-->
 				<configuration>
 					<warSourceDirectory>WebContent</warSourceDirectory>
 				</configuration>
@@ -41,6 +41,14 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			</dependency>
 		<dependency>
 			<groupId>com.github.messenger4j</groupId>
 			<artifactId>messenger4j</artifactId>

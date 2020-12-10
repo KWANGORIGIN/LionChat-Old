@@ -1,5 +1,9 @@
 package com.canvasjs.dao;
 
+import java.security.Timestamp;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,10 +11,20 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.canvasjs.model.DataPointsModel;
 import com.canvasjs.services.DataPointsMapper;
 
+import psu.lionchat.entity.Entity;
+import psu.lionchat.intent.Intent;
+
 public class DataPointsDAOImpl implements DataPointsDAO {
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplateObject;
-
+	
+	public String getDocument(Intent intent) {
+		for(Entity e : intent.getEntities()	) {
+			return "";
+		}
+		return null;
+	}
+	
 	public void setDataSource(DataSource dataSource) {
 	      this.dataSource = dataSource;
 	      this.jdbcTemplateObject = new JdbcTemplate(dataSource);
