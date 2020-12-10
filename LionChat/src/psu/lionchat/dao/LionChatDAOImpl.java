@@ -45,9 +45,9 @@ public class LionChatDAOImpl implements LionChatDAO {
 	public String getDocumentFromIntent(Intent intent) {
 		if (intent instanceof CampusEventsIntent) {
 			for (Entity e : intent.getEntities()) {
-				if (e instanceof DateTimeEntity dateTimeEntity) {
-					Timestamp after = dateTimeEntity.getTimestamp();
-					Timestamp before = Timestamp.valueOf(dateTimeEntity.getTimestamp().toLocalDateTime().plusDays(1));
+				if (e instanceof DateTimeEntity) {
+					Timestamp after = ((DateTimeEntity)e).getTimestamp();
+					Timestamp before = Timestamp.valueOf(((DateTimeEntity)e).getTimestamp().toLocalDateTime().plusDays(1));
 					String SQL = String.format(
 							"select * from lionchat.campuseventsdocuments WHERE starttime between '%s' and '%s' and status='CONFIRMED'",
 							after, before);
