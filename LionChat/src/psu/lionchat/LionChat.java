@@ -44,7 +44,11 @@ public class LionChat {
 			}
 
 			this.convState = ConversationState.ENTITYSTATE;
-			message = null; //set message to null for use in getEntityInfo()
+
+			if(this.userIntent.getEntities().size() > 0)
+			{
+				message = null; //set message to null for use in getEntityInfo()
+			}
 		}
 
 		//if EntityState, gather entity information
@@ -171,7 +175,7 @@ public class LionChat {
 	{
 		if(intent instanceof ErieInfoIntent)
 		{
-			this.document = ((ErieInfoIntent) intent).getURL() + message;
+			this.document = ((ErieInfoIntent) intent).getURL() + message.replaceAll("\\s", "+");
 		}
 		else
 		{
