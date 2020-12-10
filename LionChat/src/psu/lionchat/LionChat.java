@@ -44,19 +44,61 @@ public class LionChat {
 			this.getEntityInfoFromUser(message);
 		}
 
+		if(this.convState == ConversationState.SUCCESSSTATE)
+		{
+			sendResponse("Did this answer your question, yes or no?");
+			//
+			//get user input from messenger
+
+			if(true)
+			{
+				return;
+			}
+
+
+			if(message == "no")
+			{
+				this.convState = ConversationState.INTENTSTATE;
+				sendResponse("Please enter a question.");
+
+				return;
+				//wait for response
+			}
+
+			this.convState = ConversationState.RATINGSTATE;
+		}
+
 		if(this.convState == ConversationState.RATINGSTATE)
 		{
-			//prompt for rating
+			sendResponse("How would you rate your LionChat experience, 1 to 5 stars?");
 
-			storeRating(this.userIntent, Integer.valueOf(message));
+			if(true)
+			{
+				return;
+			}
+
+			//wait for rating
+
+			int rating = Integer.valueOf(message);
+
+			if(rating < 1 || rating > 5)
+			{
+				sendResponse("Please enter a value between 1 and 5:");
+				//wait for response
+				return;
+			}
+
+			storeRating(this.userIntent, rating);
 			this.convState = ConversationState.INTENTSTATE;
+
+			//maybe an goodbye message?
 		}
 
 	}
 
 	public void sendResponse(String message)
 	{
-
+		//call messenger4J api
 	}
 
 	public void getEntityInfoFromUser(String message)
@@ -71,7 +113,8 @@ public class LionChat {
 
 				if(message == null)
 				{
-					//e.getprompt & display
+					sendResponse(e.getPrompt());
+					return;
 					//user will input info
 				}
 
@@ -84,8 +127,9 @@ public class LionChat {
 			}
 		}
 
-		this.convState = ConversationState.RATINGSTATE;
-
+		this.convState = ConversationState.SUCCESSSTATE;
+		this.document = this.lionDAO.getDocumentFromIntent(this.userIntent);
+		sendResponse(this.document);
 	}
 
 	public void sendDocument()
@@ -123,5 +167,6 @@ enum ConversationState
 {
 	INTENTSTATE,
 	ENTITYSTATE,
+	SUCCESSSTATE,
 	RATINGSTATE;
 }
