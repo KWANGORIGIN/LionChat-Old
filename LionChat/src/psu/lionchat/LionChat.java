@@ -1,7 +1,19 @@
 package psu.lionchat;
 
+import com.github.messenger4j.exception.MessengerVerificationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
+
+import static com.github.messenger4j.Messenger.CHALLENGE_REQUEST_PARAM_NAME;
+import static com.github.messenger4j.Messenger.MODE_REQUEST_PARAM_NAME;
+import static com.github.messenger4j.Messenger.VERIFY_TOKEN_REQUEST_PARAM_NAME;
 
 import com.github.messenger4j.Messenger;
 
@@ -12,8 +24,10 @@ import psu.lionchat.dao.LionChatDAOImpl;
 import psu.lionchat.entity.Entity;
 import psu.lionchat.intent.Intent;
 
+@RestController
+@RequestMapping("/callback")
 public class LionChat {
-	private final Messenger messenger = Messenger.create("PAGE_ACCESS_TOKEN", "APP_SECRET", "VERIFY_TOKEN");
+	private final Messenger messenger;
 	private static LionChat lionChat = new LionChat();
 	private final ClassifierIF classifier;
 	private final LionChatDAO lionDAO;
@@ -28,37 +42,22 @@ public class LionChat {
 		convState = ConversationState.INTENTSTATE;
 		document = "";
 
+		this.messenger = Messenger.create("PAGE_ACCESS_TOKEN", "APP_SECRET", "VERIFY_TOKEN");
+		//this.messenger.verifyWebhook(mode, "VERIFY_TOKEN");
 
-		// Setup Facebook messenger.
-//		try {
-//			messenger.verifyWebhook("subscribe", "VERIFY_TOKEN");
-//			// ???
-//			final String payload = "{\"object\":\"page\",\"entry\":[{\"id\":\"1717527131834678\",\"time\":1475942721780,"
-//					+ "\"messaging\":[{\"sender\":{\"id\":\"1256217357730577\"},\"recipient\":{\"id\":\"1717527131834678\"},"
-//					+ "\"timestamp\":1475942721741,\"message\":{\"mid\":\"mid.1475942721728:3b9e3646712f9bed52\","
-//					+ "\"seq\":123,\"text\":\"34wrr3wr\"}}]}]}";
-//			final String signature = "sha1=3daa41999293ff66c3eb313e04bcf77861bb0276";
-//
-//			messenger.onReceiveEvents(payload, Optional.of(signature), event -> {
-//				final String senderId = event.senderId();
-//				final Instant timestamp = event.timestamp();
-//
-//				if (event.isTextMessageEvent()) {
-//					final TextMessageEvent textMessageEvent = event.asTextMessageEvent();
-//					final String messageId = textMessageEvent.messageId();
-//					final String text = textMessageEvent.text();
-//			        System.out.printf(
-//			            "Received text message from '%s' at '%s' with content: %s (mid: %s)\n",
-//			            senderId,
-//			            timestamp,
-//			            text,
-//			            messageId);
-//			}
-//			});
-//		} catch (MessengerVerificationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<String> verifyWebhook(@RequestParam(MODE_REQUEST_PARAM_NAME) final String mode,
+												@RequestParam(VERIFY_TOKEN_REQUEST_PARAM_NAME) final String verifyToken,
+												@RequestParam(CHALLENGE_REQUEST_PARAM_NAME) final String challenge){
+		try {
+			this.messenger.verifyWebhook(mode, verifyToken);
+			return ResponseEntity.ok(challenge);
+		} catch (MessengerVerificationException e) {
+			System.out.println("Webhook FAILED to verify");
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+	}
 	}
 
 	public void getResponse(String message)
