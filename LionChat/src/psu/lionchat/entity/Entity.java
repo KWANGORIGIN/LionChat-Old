@@ -6,7 +6,7 @@ public abstract class Entity {
 	protected String prompt;
 	
 	public abstract String getEntityInformation();
-	public abstract void setEntityInformation(String info);
+	public abstract boolean setEntityInformation(String info);
 	
 	@Override
 	public String toString() {

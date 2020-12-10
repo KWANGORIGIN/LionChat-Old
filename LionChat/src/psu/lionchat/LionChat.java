@@ -30,12 +30,13 @@ public class LionChat {
 
 	public void getResponse(String message)
 	{
+		//code runs depending on current conversation state
 		if(this.convState == ConversationState.INTENTSTATE)
 		{
 			this.userIntent = this.classifier.classifyUserIntent(message);
 
 			this.convState = ConversationState.ENTITYSTATE;
-			message = null;
+			message = null; //set message to null for use in getEntityInfo()
 		}
 
 		if(this.convState == ConversationState.ENTITYSTATE)
@@ -58,19 +59,25 @@ public class LionChat {
 
 	public void getEntityInfoFromUser(String message)
 	{
-		for(Entity e : this.userIntent.getEntities())
+		//loop through each entity in userIntent
+		for(int i = 0; i < this.userIntent.getEntities().size(); i++)
 		{
-			if(!(e.getHasInfo()))
+			Entity e = this.userIntent.getEntities().get(i);
+			if(!(e.getHasInfo())) //if info not filled
 			{
 				//loop through entities, set info for those whose hasInfo is false
 
 				if(message == null)
 				{
-
 					//e.getprompt & display
 					//user will input info
 				}
-				e.setEntityInformation(message);
+
+				//if setEntityInformation fails
+				if(!(e.setEntityInformation(message))) //if info fails to set
+				{
+					i--; //decrement i
+				}
 				message = null;
 			}
 		}

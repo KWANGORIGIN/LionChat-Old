@@ -16,8 +16,9 @@ public class OperatingSystemEntity extends Entity {
 	}
 
 	@Override
-	public void setEntityInformation(String info) {
+	public boolean setEntityInformation(String info) {
 		this.userOs = info;
 		this.hasInfo = true;
+		return this.hasInfo;
 	}
 }

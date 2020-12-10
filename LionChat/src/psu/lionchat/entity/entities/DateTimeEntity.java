@@ -45,7 +45,7 @@ public class DateTimeEntity extends Entity {
 	}
 
 	@Override
-	public void setEntityInformation(String info) {
+	public boolean setEntityInformation(String info) {
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy hh a");
 
 		try
@@ -53,10 +53,12 @@ public class DateTimeEntity extends Entity {
 			Date infoDate = dateFormatter.parse(info, new ParsePosition(0));
 			this.dateTime.setTime(infoDate);
 			this.hasInfo = true;
+			return this.hasInfo;
 		}
 		catch(NullPointerException e)
 		{
 			System.err.println("Invalid date format.");
+			return this.hasInfo;
 		}
 	}
 
