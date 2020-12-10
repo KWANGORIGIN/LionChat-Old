@@ -33,6 +33,8 @@ def trainIntentClassifier():
         for row in csvReader:
             questions.append(row['Question'].strip())
             labels.append(row['Intent'].strip())
+            
+    print("Labels: ", labels)
         
     #Transforming questions list into questions tfIDF vectors
     questions_vec = inputVector.fit_transform(questions)

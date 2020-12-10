@@ -73,10 +73,9 @@ public class LionChat {
                     TextMessageEvent message = event.asTextMessageEvent();
                     this.currentUserId = message.senderId();
 
-                    sendTypingOn(currentUserId);
+                    sendTypingOn(currentUserId);//Indicates to user that LionChat is processing
 
-                    getResponse(message.text());//Calls our method to do processing
-//                    sendResponse(this.userIntent.toString());
+                    getResponse(message.text());
                 }
             });
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -127,6 +126,12 @@ public class LionChat {
         if(this.convState == ConversationState.INTENTSTATE)
         {
             this.userIntent = this.classifier.classifyUserIntent(message);
+
+            if(this.userIntent instanceof GreetingIntent)
+            {
+                sendResponse("Hello! I am LionChat: the ultimate chatbot for all things Penn State! We Are!");
+                return;
+            }
 
             this.convState = ConversationState.ENTITYSTATE;
             message = null; //set message to null for use in getEntityInfo()
@@ -194,12 +199,10 @@ public class LionChat {
                 return;
             }
 
-            storeRating(this.userIntent, rating);
-            this.convState = ConversationState.INTENTSTATE;
-
             sendTypingOff(currentUserId);
-
-            //maybe an goodbye message?
+            storeRating(this.userIntent, rating);
+            sendResponse("Thank you for using LionChat!");
+            this.convState = ConversationState.INTENTSTATE;
         }
 
     }
@@ -236,11 +239,6 @@ public class LionChat {
         this.document = "Big Yeet";
         sendResponse(this.document);
         message = null;
-
-        if(this.userIntent instanceof GreetingIntent)
-        {
-            this.convState = ConversationState.INTENTSTATE;
-        }
 
         return message;
     }
