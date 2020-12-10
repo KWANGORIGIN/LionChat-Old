@@ -39,7 +39,7 @@ public class DateTimeEntity extends Entity {
 		return timeString;
 	}
 
-	public Timestamp getTimeStamp()
+	public Timestamp getTimestamp()
 	{
 		return new Timestamp(this.dateTime.getTimeInMillis());
 	}
