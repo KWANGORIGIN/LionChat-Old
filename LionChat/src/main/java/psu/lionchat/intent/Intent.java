@@ -19,8 +19,9 @@ public abstract class Intent {
 		return entities;
 	}
 
-	public String getIntentName(){
-		return intentName;
+	@Override
+	public String toString()
+	{
+		return this.intentName;
 	}
-
 }

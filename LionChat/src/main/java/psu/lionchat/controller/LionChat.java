@@ -23,6 +23,7 @@ import psu.lionchat.classifier.MyNaiveBayesClassifier;
 //import psu.lionchat.dao.LionChatDAOImpl;
 import psu.lionchat.entity.Entity;
 import psu.lionchat.intent.Intent;
+import psu.lionchat.intent.intents.ErieInfoIntent;
 import psu.lionchat.intent.intents.GreetingIntent;
 
 import static com.github.messenger4j.Messenger.*;
@@ -200,7 +201,7 @@ public class LionChat {
             }
 
             sendTypingOff(currentUserId);
-            storeRating(this.userIntent, rating);
+//            storeRating(this.userIntent, rating);
             sendResponse("Thank you for using LionChat!");
             this.convState = ConversationState.INTENTSTATE;
         }
@@ -235,7 +236,7 @@ public class LionChat {
 
 
         this.convState = ConversationState.SUCCESSSTATE;
-//        this.document = this.lionDAO.getDocumentFromIntent(this.userIntent);
+        getAnswer(this.userIntent, message);
         this.document = "Big Yeet";
         sendResponse(this.document);
         message = null;
@@ -243,9 +244,21 @@ public class LionChat {
         return message;
     }
 
-    public void storeRating(Intent intent, int rating)
-    {
+//    public void storeRating(Intent intent, int rating)
+//    {
+//        this.lionDAO.addUserRating(intent, rating);
+//    }
 
+    public void getAnswer(Intent intent, String message)
+    {
+        if(intent instanceof ErieInfoIntent)
+        {
+            this.document = ((ErieInfoIntent) intent).getURL() + message;
+        }
+        else
+        {
+//            this.document = this.lionDAO.getDocumentFromIntent(intent);
+        }
     }
 
 }
