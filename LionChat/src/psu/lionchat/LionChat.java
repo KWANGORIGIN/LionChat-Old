@@ -14,20 +14,125 @@ import psu.lionchat.intent.Intent;
 import psu.lionchat.intent.intents.ErieInfoIntent;
 import psu.lionchat.intent.intents.GreetingIntent;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.github.messenger4j.exception.MessengerApiException;
+import com.github.messenger4j.exception.MessengerIOException;
+import com.github.messenger4j.exception.MessengerVerificationException;
+import com.github.messenger4j.send.MessagePayload;
+import com.github.messenger4j.send.MessagingType;
+import com.github.messenger4j.send.NotificationType;
+import com.github.messenger4j.send.SenderActionPayload;
+import com.github.messenger4j.send.message.TextMessage;
+import com.github.messenger4j.send.recipient.IdRecipient;
+import com.github.messenger4j.send.senderaction.SenderAction;
+import org.springframework.web.bind.annotation.*;
+
+//import com.github.messenger4j.Messenger;
+import com.github.messenger4j.webhook.event.TextMessageEvent;
+
+//import psu.lionchat.classifier.MyNaiveBayesClassifier;
+////import psu.lionchat.dao.LionChatDAO;
+////import psu.lionchat.dao.LionChatDAOImpl;
+//import psu.lionchat.entity.Entity;
+//import psu.lionchat.intent.Intent;
+//import psu.lionchat.intent.intents.ErieInfoIntent;
+//import psu.lionchat.intent.intents.GreetingIntent;
+
+import static com.github.messenger4j.Messenger.*;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
+@RestController
+@RequestMapping("/lionchat")
+
 public class LionChat {
-	private final Messenger messenger = Messenger.create("PAGE_ACCESS_TOKEN", "APP_SECRET", "VERIFY_TOKEN");
-	private static LionChat lionChat = new LionChat();
+	private final Messenger messenger;
+	//private static LionChat lionChat = new LionChat();
 	private final ClassifierIF classifier;
 	private final LionChatDAO lionDAO;
 	private Intent userIntent;
 	private ConversationState convState;
 	private String document;
+	private String currentUserId;
 
-	public LionChat() {
+	public LionChat(Messenger messenger){
 		classifier = new MyNaiveBayesClassifier();
-		lionDAO = new LionChatDAOImpl();
+        lionDAO = new LionChatDAOImpl();
 		convState = ConversationState.INTENTSTATE;
 		document = "";
+
+		this.messenger = messenger;
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<String> verifyWebhook(@RequestParam(MODE_REQUEST_PARAM_NAME) final String mode,
+												@RequestParam(VERIFY_TOKEN_REQUEST_PARAM_NAME) final String verifyToken,
+												@RequestParam(CHALLENGE_REQUEST_PARAM_NAME) final String challenge){
+		try {
+			System.out.println("Verifying Webhook");
+			this.messenger.verifyWebhook(mode, verifyToken);
+			return ResponseEntity.ok(challenge);
+		} catch (MessengerVerificationException e) {
+			System.out.println("Webhook FAILED to verify");
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> receiveMessage(@RequestBody final String payload, @RequestHeader(SIGNATURE_HEADER_NAME) final String signature) {
+		try {
+			this.messenger.onReceiveEvents(payload, of(signature), event -> {
+				if (event.isTextMessageEvent()) {
+					TextMessageEvent message = event.asTextMessageEvent();
+					this.currentUserId = message.senderId();
+
+					sendTypingOn(currentUserId);//Indicates to user that LionChat is processing
+
+					getResponse(message.text());
+				}
+			});
+			return ResponseEntity.status(HttpStatus.OK).build();
+		} catch (MessengerVerificationException e) {
+			System.out.println("Callback payload failed");
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+	}
+
+	public void sendResponse(String message) {
+		try {
+			final IdRecipient recipient = IdRecipient.create(currentUserId);
+			final NotificationType notificationType = NotificationType.REGULAR;
+			final String metadata = "DEVELOPER_DEFINED_METADATA";
+
+			final TextMessage textMessage = TextMessage.create(message, empty(), of(metadata));
+			final MessagePayload messagePayload = MessagePayload.create(recipient, MessagingType.RESPONSE, textMessage, of(notificationType), empty());
+			this.messenger.send(messagePayload);
+
+		} catch (MessengerApiException | MessengerIOException e) {
+			System.out.println("Error sending message to user");
+		}
+	}
+
+	private void sendTypingOn(String recipientId){
+		try{
+			this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_ON));
+		}catch(MessengerApiException e){
+			e.printStackTrace();
+		}catch(MessengerIOException e){
+			e.printStackTrace();
+		}
+	}
+
+	private void sendTypingOff(String recipientId){
+		try{
+			this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_OFF));
+		}catch(MessengerApiException e){
+			e.printStackTrace();
+		}catch(MessengerIOException e){
+			e.printStackTrace();
+		}
 	}
 
 	public void getResponse(String message)
@@ -118,7 +223,7 @@ public class LionChat {
 				return;
 			}
 
-
+			sendTypingOff(currentUserId);
 			storeRating(this.userIntent, rating);
 			sendResponse("Thank you for using LionChat!");
 			this.convState = ConversationState.INTENTSTATE;
@@ -126,10 +231,10 @@ public class LionChat {
 
 	}
 
-	public void sendResponse(String message)
-	{
-		//call messenger4J api
-	}
+//	public void sendResponse(String message)
+//	{
+//		//call messenger4J api
+//	}
 
 	public String getEntityInfoFromUser(String message)
 	{
@@ -195,9 +300,9 @@ public class LionChat {
 	}
 
 
-	public static LionChat getInstance() {
-		return lionChat;
-	}
+//	public static LionChat getInstance() {
+//		return lionChat;
+//	}
 
 	public ClassifierIF getClassifier() {
 		return classifier;
