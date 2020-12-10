@@ -68,14 +68,15 @@ public class LionChat {
 			this.userIntent = this.classifier.classifyUserIntent(message);
 
 			this.convState = ConversationState.ENTITYSTATE;
+			message = null;
 		}
 
 		if(this.convState == ConversationState.ENTITYSTATE)
 		{
-			if(this.getEntityInfoFromUser())
-			{
-				this.convState = ConversationState.RATINGSTATE;
-			}
+
+			//if in entity state, get entity info - pass in string?
+			this.getEntityInfoFromUser(message);
+
 		}
 
 		if(this.convState == ConversationState.RATINGSTATE)
@@ -91,22 +92,27 @@ public class LionChat {
 
 	}
 
-	public boolean getEntityInfoFromUser()
+	public void getEntityInfoFromUser(String message)
 	{
-		boolean hasAllEntities = true;
 		for(Entity e : this.userIntent.getEntities())
 		{
 			if(!(e.getHasInfo()))
 			{
-				hasAllEntities = false;
-				//get question
-				//input entity info
-				//send to setEntityInformation
-				//e.setEntityInformation(string);
+				//loop through entities, set info for those whose hasInfo is false
+
+				if(message == null)
+				{
+					//e.getprompt & display
+					//get user input
+				}
+				e.setEntityInformation(message);
+				message = null;
+
 			}
 		}
 
-		return hasAllEntities;
+		this.convState = ConversationState.RATINGSTATE;
+
 	}
 
 	public void sendDocument()
