@@ -8,6 +8,7 @@ public class Location extends Entity {
 	public Location()
 	{
 		this.entityName = "Location";
+		this.prompt = "Please enter the location you are interested in:";
 	}
 
 
@@ -17,11 +18,9 @@ public class Location extends Entity {
 	}
 
 	@Override
-	public void setEntityInformation(String info) {
+	public boolean setEntityInformation(String info) {
 		this.location = info;
 		this.hasInfo = true;
+		return this.hasInfo;
 	}
-
-
-
 }

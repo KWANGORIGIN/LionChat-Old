@@ -7,6 +7,7 @@ public class OperatingSystemEntity extends Entity {
 
 	public OperatingSystemEntity() {
 		this.entityName = "User OS";
+		this.prompt = "Choose your operating system: Windows or MacOS.";
 	}
 
 	@Override
@@ -15,11 +16,9 @@ public class OperatingSystemEntity extends Entity {
 	}
 
 	@Override
-	public void setEntityInformation(String info) {
+	public boolean setEntityInformation(String info) {
 		this.userOs = info;
 		this.hasInfo = true;
-
+		return this.hasInfo;
 	}
-
-
 }

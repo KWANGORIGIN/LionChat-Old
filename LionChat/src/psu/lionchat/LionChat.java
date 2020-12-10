@@ -20,99 +20,136 @@ public class LionChat {
 	private Intent userIntent;
 	private ConversationState convState;
 	private String document;
-	private boolean entitiesComplete;
 
 	public LionChat() {
 		classifier = new MyNaiveBayesClassifier();
 		lionDAO = new LionChatDAOImpl();
 		convState = ConversationState.INTENTSTATE;
 		document = "";
-
-
-		// Setup Facebook messenger.
-//		try {
-//			messenger.verifyWebhook("subscribe", "VERIFY_TOKEN");
-//			// ???
-//			final String payload = "{\"object\":\"page\",\"entry\":[{\"id\":\"1717527131834678\",\"time\":1475942721780,"
-//					+ "\"messaging\":[{\"sender\":{\"id\":\"1256217357730577\"},\"recipient\":{\"id\":\"1717527131834678\"},"
-//					+ "\"timestamp\":1475942721741,\"message\":{\"mid\":\"mid.1475942721728:3b9e3646712f9bed52\","
-//					+ "\"seq\":123,\"text\":\"34wrr3wr\"}}]}]}";
-//			final String signature = "sha1=3daa41999293ff66c3eb313e04bcf77861bb0276";
-//
-//			messenger.onReceiveEvents(payload, Optional.of(signature), event -> {
-//				final String senderId = event.senderId();
-//				final Instant timestamp = event.timestamp();
-//
-//				if (event.isTextMessageEvent()) {
-//					final TextMessageEvent textMessageEvent = event.asTextMessageEvent();
-//					final String messageId = textMessageEvent.messageId();
-//					final String text = textMessageEvent.text();
-//			        System.out.printf(
-//			            "Received text message from '%s' at '%s' with content: %s (mid: %s)\n",
-//			            senderId,
-//			            timestamp,
-//			            text,
-//			            messageId);
-//			}
-//			});
-//		} catch (MessengerVerificationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	public void getResponse(String message)
 	{
+		//code runs depending on current conversation state
 		if(this.convState == ConversationState.INTENTSTATE)
 		{
 			this.userIntent = this.classifier.classifyUserIntent(message);
 
 			this.convState = ConversationState.ENTITYSTATE;
-			message = null;
+			message = null; //set message to null for use in getEntityInfo()
 		}
 
 		if(this.convState == ConversationState.ENTITYSTATE)
 		{
+			message = this.getEntityInfoFromUser(message);
+		}
 
-			//if in entity state, get entity info - pass in string?
-			this.getEntityInfoFromUser(message);
+		if(this.convState == ConversationState.SUCCESSSTATE)
+		{
 
+			if(message == null)
+			{
+				sendResponse("Did this answer your question, yes or no?");
+				if(true)
+				{
+					return;
+					//get user input from messenger
+				}
+			}
+
+			if(message.equals("no"))
+			{
+
+				this.convState = ConversationState.INTENTSTATE;
+				message = null;
+
+				sendResponse("Please enter a question.");
+
+				return;
+				//wait for response
+			}
+			else if(message.equals("yes"))
+			{
+				this.convState = ConversationState.RATINGSTATE;
+				message = null;
+			}
+			else
+			{
+				sendResponse("Please enter yes or no");
+				return;
+			}
 		}
 
 		if(this.convState == ConversationState.RATINGSTATE)
 		{
 
+			if(message == null)
+			{
+				sendResponse("How would you rate your LionChat experience, 1 to 5 stars?");
+
+				if (true) {
+					return;
+				}
+			}
+
+			//wait for rating
+
+			int rating = Integer.valueOf(message);
+
+			if(rating < 1 || rating > 5)
+			{
+				sendResponse("Please enter a value between 1 and 5:");
+				//wait for response
+				return;
+			}
+
+			storeRating(this.userIntent, rating);
 			this.convState = ConversationState.INTENTSTATE;
+
+
+			//maybe an goodbye message?
 		}
 
 	}
 
 	public void sendResponse(String message)
 	{
-
+		//call messenger4J api
 	}
 
-	public void getEntityInfoFromUser(String message)
+	public String getEntityInfoFromUser(String message)
 	{
-		for(Entity e : this.userIntent.getEntities())
+		//loop through each entity in userIntent
+		for(int i = 0; i < this.userIntent.getEntities().size(); i++)
 		{
-			if(!(e.getHasInfo()))
+			Entity e = this.userIntent.getEntities().get(i);
+			if(!(e.getHasInfo())) //if info not filled
 			{
 				//loop through entities, set info for those whose hasInfo is false
 
 				if(message == null)
 				{
-					//e.getprompt & display
-					//get user input
+					sendResponse(e.getPrompt());
+					return null;
+					//user will input info
 				}
-				e.setEntityInformation(message);
-				message = null;
 
+				//if setEntityInformation fails
+				if(!(e.setEntityInformation(message))) //if info fails to set
+				{
+					i--; //decrement i
+				}
+				message = null;
 			}
 		}
 
-		this.convState = ConversationState.RATINGSTATE;
 
+		this.convState = ConversationState.SUCCESSSTATE;
+		this.document = this.lionDAO.getDocumentFromIntent(this.userIntent);
+		sendResponse(this.document);
+		message = null;
+
+		return message;
 	}
 
 	public void sendDocument()
@@ -150,5 +187,6 @@ enum ConversationState
 {
 	INTENTSTATE,
 	ENTITYSTATE,
+	SUCCESSSTATE,
 	RATINGSTATE;
 }
