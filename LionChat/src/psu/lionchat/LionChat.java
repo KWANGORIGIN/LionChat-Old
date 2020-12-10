@@ -46,26 +46,33 @@ public class LionChat {
 
 		if(this.convState == ConversationState.SUCCESSSTATE)
 		{
-			sendResponse("Did this answer your question, yes or no?");
-			//
-			//get user input from messenger
 
-			if(true)
+			if(message == null)
 			{
-				return;
+				sendResponse("Did this answer your question, yes or no?");
+				if(true)
+				{
+					return;
+					//get user input from messenger
+				}
 			}
-
 
 			if(message == "no")
 			{
 				this.convState = ConversationState.INTENTSTATE;
+				message = null;
 				sendResponse("Please enter a question.");
 
 				return;
 				//wait for response
 			}
+			else if(message == "yes")
+			{
+				this.convState = ConversationState.RATINGSTATE;
+				message = null;
+			}
 
-			this.convState = ConversationState.RATINGSTATE;
+
 		}
 
 		if(this.convState == ConversationState.RATINGSTATE)
@@ -101,7 +108,7 @@ public class LionChat {
 		//call messenger4J api
 	}
 
-	public void getEntityInfoFromUser(String message)
+	public String getEntityInfoFromUser(String message)
 	{
 		//loop through each entity in userIntent
 		for(int i = 0; i < this.userIntent.getEntities().size(); i++)
@@ -114,7 +121,7 @@ public class LionChat {
 				if(message == null)
 				{
 					sendResponse(e.getPrompt());
-					return;
+					return null;
 					//user will input info
 				}
 
@@ -127,9 +134,13 @@ public class LionChat {
 			}
 		}
 
+
 		this.convState = ConversationState.SUCCESSSTATE;
 		this.document = this.lionDAO.getDocumentFromIntent(this.userIntent);
 		sendResponse(this.document);
+		message = null;
+
+		return message;
 	}
 
 	public void sendDocument()
