@@ -11,6 +11,7 @@ import psu.lionchat.dao.LionChatDAO;
 import psu.lionchat.dao.LionChatDAOImpl;
 import psu.lionchat.entity.Entity;
 import psu.lionchat.intent.Intent;
+import psu.lionchat.intent.intents.GreetingIntent;
 
 public class LionChat {
 	private final Messenger messenger = Messenger.create("PAGE_ACCESS_TOKEN", "APP_SECRET", "VERIFY_TOKEN");
@@ -150,6 +151,11 @@ public class LionChat {
 		this.document = this.lionDAO.getDocumentFromIntent(this.userIntent);
 		sendResponse(this.document);
 		message = null;
+
+		if(this.userIntent instanceof GreetingIntent)
+		{
+			this.convState = ConversationState.INTENTSTATE;
+		}
 
 		return message;
 	}
