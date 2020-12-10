@@ -19,8 +19,5 @@ public class OperatingSystemEntity extends Entity {
 	public void setEntityInformation(String info) {
 		this.userOs = info;
 		this.hasInfo = true;
-
 	}
-
-
 }

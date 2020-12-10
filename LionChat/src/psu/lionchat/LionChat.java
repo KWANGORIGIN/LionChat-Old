@@ -20,45 +20,12 @@ public class LionChat {
 	private Intent userIntent;
 	private ConversationState convState;
 	private String document;
-	private boolean entitiesComplete;
 
 	public LionChat() {
 		classifier = new MyNaiveBayesClassifier();
 		lionDAO = new LionChatDAOImpl();
 		convState = ConversationState.INTENTSTATE;
 		document = "";
-
-
-		// Setup Facebook messenger.
-//		try {
-//			messenger.verifyWebhook("subscribe", "VERIFY_TOKEN");
-//			// ???
-//			final String payload = "{\"object\":\"page\",\"entry\":[{\"id\":\"1717527131834678\",\"time\":1475942721780,"
-//					+ "\"messaging\":[{\"sender\":{\"id\":\"1256217357730577\"},\"recipient\":{\"id\":\"1717527131834678\"},"
-//					+ "\"timestamp\":1475942721741,\"message\":{\"mid\":\"mid.1475942721728:3b9e3646712f9bed52\","
-//					+ "\"seq\":123,\"text\":\"34wrr3wr\"}}]}]}";
-//			final String signature = "sha1=3daa41999293ff66c3eb313e04bcf77861bb0276";
-//
-//			messenger.onReceiveEvents(payload, Optional.of(signature), event -> {
-//				final String senderId = event.senderId();
-//				final Instant timestamp = event.timestamp();
-//
-//				if (event.isTextMessageEvent()) {
-//					final TextMessageEvent textMessageEvent = event.asTextMessageEvent();
-//					final String messageId = textMessageEvent.messageId();
-//					final String text = textMessageEvent.text();
-//			        System.out.printf(
-//			            "Received text message from '%s' at '%s' with content: %s (mid: %s)\n",
-//			            senderId,
-//			            timestamp,
-//			            text,
-//			            messageId);
-//			}
-//			});
-//		} catch (MessengerVerificationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	public void getResponse(String message)
@@ -73,10 +40,7 @@ public class LionChat {
 
 		if(this.convState == ConversationState.ENTITYSTATE)
 		{
-
-			//if in entity state, get entity info - pass in string?
 			this.getEntityInfoFromUser(message);
-
 		}
 
 		if(this.convState == ConversationState.RATINGSTATE)
@@ -102,12 +66,12 @@ public class LionChat {
 
 				if(message == null)
 				{
+
 					//e.getprompt & display
-					//get user input
+					//user will input info
 				}
 				e.setEntityInformation(message);
 				message = null;
-
 			}
 		}
 

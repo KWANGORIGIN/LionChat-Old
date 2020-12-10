@@ -1,5 +1,6 @@
 package psu.lionchat.entity.entities;
 
+import java.sql.Timestamp;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,9 +39,14 @@ public class DateTimeEntity extends Entity {
 		return timeString;
 	}
 
+	public Timestamp getTimeStamp()
+	{
+		return new Timestamp(this.dateTime.getTimeInMillis());
+	}
+
 	@Override
-	public void setEntityInformation(String info) throws NullPointerException{
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH a");
+	public void setEntityInformation(String info) {
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy hh a");
 
 		try
 		{
