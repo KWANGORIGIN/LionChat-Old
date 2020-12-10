@@ -32,7 +32,7 @@ public class LionChat {
 	public void getResponse(String message)
 	{
 		//code runs depending on current conversation state
-		if(this.convState == ConversationState.INTENTSTATE)
+		if(this.convState == ConversationState.INTENTSTATE) //if IntentState, classify
 		{
 			this.userIntent = this.classifier.classifyUserIntent(message);
 
@@ -40,12 +40,13 @@ public class LionChat {
 			message = null; //set message to null for use in getEntityInfo()
 		}
 
-
+		//if EntityState, gather entity information
 		if(this.convState == ConversationState.ENTITYSTATE)
 		{
 			message = this.getEntityInfoFromUser(message);
 		}
 
+		//if in success state, see if question was answered
 		if(this.convState == ConversationState.SUCCESSSTATE)
 		{
 
@@ -82,6 +83,7 @@ public class LionChat {
 			}
 		}
 
+		//if in ratings state, accept a 1 to 5 star review from the user
 		if(this.convState == ConversationState.RATINGSTATE)
 		{
 
@@ -107,10 +109,8 @@ public class LionChat {
 
 
 			storeRating(this.userIntent, rating);
+			sendResponse("Thank you for using LionChat!");
 			this.convState = ConversationState.INTENTSTATE;
-
-
-			//maybe an goodbye message?
 		}
 
 	}

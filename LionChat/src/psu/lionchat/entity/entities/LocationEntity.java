@@ -19,7 +19,7 @@ public class LocationEntity extends Entity {
 
 	@Override
 	public boolean setEntityInformation(String info) {
-		this.location = info;
+		this.location = info.toLowerCase();
 		this.hasInfo = true;
 		return this.hasInfo;
 	}
