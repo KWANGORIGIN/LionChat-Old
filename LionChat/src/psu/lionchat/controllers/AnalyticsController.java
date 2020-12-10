@@ -168,6 +168,7 @@ public class AnalyticsController {
 
 	@RequestMapping(value = "/view-analytics/intent-average-ratings", method = RequestMethod.GET)
 	public ModelAndView getAverageRatings() {
+		System.out.println("SUCCESS");
 		ModelAndView modelAndView = new ModelAndView("Analytics/IntentAverageRatings");
 		LionChatDAO dataPoints;
 		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {

@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div id="sidebar" class="sidebar-toggle">
 	<ul class="nav nav-sidebar">
-		<li><a href="/"> <i class="fa fa-home" aria-hidden="true"></i>
+		<li><a href="${pageContext.request.contextPath}/"> <i class="fa fa-home" aria-hidden="true"></i>
 				<span>HOME</span>
 		</a></li>
 		<li role="separator" class="divider"></li>

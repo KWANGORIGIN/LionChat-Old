@@ -23,6 +23,7 @@
                 dataPoints: ${dataPoints}
             }]
         });
+        chart.options.data[0].dataPoints.sort((dataPoint1, dataPoint2) => {return dataPoint2.y-dataPoint1.y});
         chart.render();
     });
 </script>

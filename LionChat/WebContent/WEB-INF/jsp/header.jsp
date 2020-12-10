@@ -5,7 +5,7 @@
 				<i class="fa fa-bars" aria-hidden="true"></i>
 			</div>
 			<div class="brand">
-				<a href="/"> LionChat <span
+				<a href="${pageContext.request.contextPath}/"> LionChat <span
 					class="hidden-xs text-muted">Analytics</span>
 				</a>
 			</div>
