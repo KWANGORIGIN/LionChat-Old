@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.sql.DataSource;
 
@@ -47,8 +48,9 @@ public class LionChatDAOImpl implements LionChatDAO {
 				if (e instanceof DateTimeEntity dateTimeEntity) {
 					Timestamp after = dateTimeEntity.getTimestamp();
 					Timestamp before = Timestamp.valueOf(dateTimeEntity.getTimestamp().toLocalDateTime().plusDays(1));
-					String SQL = "SELECT description FROM lionchat.reviews WHERE starttime between " + after + " and "
-							+ before + " and status == CONFIRMED";
+					String SQL = String.format(
+							"select * from lionchat.campuseventsdocuments WHERE starttime between '%s' and '%s' and status='CONFIRMED'",
+							after, before);
 
 					List<String> strings = jdbcTemplateObject.query(SQL, new RowMapper<String>() {
 						@Override
@@ -56,7 +58,7 @@ public class LionChatDAOImpl implements LionChatDAO {
 							Timestamp starttime = rs.getTimestamp("starttime");
 							long duration = rs.getTimestamp("endtime").getTime() - starttime.getTime();
 							long minutes = duration / 1000 / 60;
-							return String.format("%s\n Starts: %s Duration: %d\nLocation: %s\nDescription %s\n",
+							return String.format("%s\nStarts: %s\nDuration: %d minutes\nLocation: %s\nDescription %s\n",
 									rs.getString("summary"), starttime, minutes, rs.getString("location"),
 									rs.getString("description"));
 						}
@@ -74,13 +76,13 @@ public class LionChatDAOImpl implements LionChatDAO {
 					String SQL = "";
 					if (OS.equals("windows")) {
 						SQL = "select * from lionchat.wifiassistancedocuments where os='windows'";
-					}else if(OS.equals("macos")) {
+					} else if (OS.equals("macos")) {
 						SQL = "select * from lionchat.wifiassistancedocuments where os='macos'";
 					}
 					List<String> strings = jdbcTemplateObject.query(SQL, new RowMapper<String>() {
 						@Override
 						public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-							String s = rs.getString("asssistance");
+							String s = rs.getString("assistance");
 							return s;
 						}
 					});

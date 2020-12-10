@@ -9,6 +9,6 @@ public class CampusEventsIntent extends Intent {
 		super();
 		this.intentName = "CampusEventsIntent";
 		this.entities.add(new DateTimeEntity());
-		this.entities.add(new LocationEntity());
+		//this.entities.add(new LocationEntity());
 	}
 }
