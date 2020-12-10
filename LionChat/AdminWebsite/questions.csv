@@ -1,13 +1,22 @@
 ﻿Question,Intent
-what is the wifi password,itHelp
-how can i access the wifi,itHelp
-i need help setting up wifi on my device,itHelp
-how do i setup wifi for an iphone,itHelp
-what is there to do in erie,erieHelp
-where can i go get a drink,erieHelp
-what is presque isle,erieHelp
-where can i get chinese food,erieHelp
-where can i get mexican food in erie,erieHelp
+what i the wifi password,WifiAssistanceIntent
+how can i access the wifi,WifiAssistanceIntent
+i need help set up wifi on my devic,WifiAssistanceIntent
+how do i setup wifi for an iphon,WifiAssistanceIntent
+can you help me set up the wifi,WifiAssistanceIntent
+what i there to do in eri,ErieInfoIntent
+where can i go get a drink,ErieInfoIntent
+what i presqu isl,ErieInfoIntent
+where can i get chines food,ErieInfoIntent
+where can i get mexican food in eri,ErieInfoIntent
+what i there to do on campu,CampusEventsIntent
+what can i do for fun,CampusEventsIntent
+what event should i attend,CampusEventsIntent
+what activ should student particip in,CampusEventsIntent
+when i there someth fun happen,CampusEventsIntent
+hello,greetingIntent
+greet,greetingIntent
+hei,greetingIntent
+what up,greetingIntent
 hi there,greetingIntent
-hello there,greetingIntent
-greetings,greetingIntent
+

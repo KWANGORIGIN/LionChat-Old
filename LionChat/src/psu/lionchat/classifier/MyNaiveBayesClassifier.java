@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import psu.lionchat.intent.Intent;
 import psu.lionchat.intent.intents.CampusEventsIntent;
 import psu.lionchat.intent.intents.ErieInfoIntent;
+import psu.lionchat.intent.intents.GreetingIntent;
 import psu.lionchat.intent.intents.WifiAssistanceIntent;
 
 public class MyNaiveBayesClassifier implements ClassifierIF {
@@ -53,6 +54,9 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 			return new CampusEventsIntent();
 		}else if(utterance.equals("ErieInfoIntent")) {
 			return new ErieInfoIntent();
+		}else if(utterance.equals("GreetingIntent"))
+		{
+			return new GreetingIntent();
 		}
 		
 		return null;

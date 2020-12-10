@@ -39,6 +39,7 @@ public class LionChat {
 			message = null; //set message to null for use in getEntityInfo()
 		}
 
+
 		if(this.convState == ConversationState.ENTITYSTATE)
 		{
 			message = this.getEntityInfoFromUser(message);
@@ -102,6 +103,7 @@ public class LionChat {
 				//wait for response
 				return;
 			}
+
 
 			storeRating(this.userIntent, rating);
 			this.convState = ConversationState.INTENTSTATE;

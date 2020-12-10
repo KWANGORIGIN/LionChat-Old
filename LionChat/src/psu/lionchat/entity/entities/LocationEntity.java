@@ -2,10 +2,10 @@ package psu.lionchat.entity.entities;
 
 import psu.lionchat.entity.Entity;
 
-public class Location extends Entity {
+public class LocationEntity extends Entity {
 	private String location;
 
-	public Location()
+	public LocationEntity()
 	{
 		this.entityName = "Location";
 		this.prompt = "Please enter the location you are interested in:";

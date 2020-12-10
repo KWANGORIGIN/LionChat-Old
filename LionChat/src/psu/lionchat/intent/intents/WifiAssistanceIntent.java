@@ -9,4 +9,10 @@ public class WifiAssistanceIntent extends Intent {
 		this.intentName = "Wifi Assistance";
 		this.entities.add(new OperatingSystemEntity());
 	}
+
+	@Override
+	public String toString(){
+		return "WifiAssistanceIntent";
+	}
+
 }

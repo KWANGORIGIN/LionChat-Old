@@ -7,4 +7,9 @@ public class ErieInfoIntent extends Intent {
 		super();
 		this.intentName = "Erie Info";
 	}
+
+	@Override
+	public String toString() {
+		return "ErieInfoIntent";
+	}
 }
