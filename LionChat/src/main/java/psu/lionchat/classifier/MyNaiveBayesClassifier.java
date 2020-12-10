@@ -44,7 +44,7 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 
 	@Override
 	public Intent classifyUserIntent(String utterance) {
-//		utterance = this.preProcessor.process(utterance);
+		utterance = this.preProcessor.process(utterance);
 		String intentString = this.getIntentString(utterance);
 
 		// TODO: These are not the correct labels.

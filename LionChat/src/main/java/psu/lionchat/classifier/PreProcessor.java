@@ -9,28 +9,28 @@
 package psu.lionchat.classifier;
 
 import java.util.ArrayList;
-import java.util.Scanner;
-import weka.core.stemmers.IteratedLovinsStemmer;
+import weka.core.stemmers.SnowballStemmer;
 
 public class PreProcessor {
 
     private String processString;
     private ArrayList<String> wordList;
-    private IteratedLovinsStemmer stemmer;
+    private SnowballStemmer stemmer;
+
 
     // default constructor
     public PreProcessor()
     {
         this.processString = "";
         this.wordList = new ArrayList<String>();
-        stemmer = new IteratedLovinsStemmer();
+        stemmer = new SnowballStemmer();
     }
     //constructor that takes string to be processed
     public PreProcessor(String process)
     {
         this.processString = process;
         this.wordList = new ArrayList<String>();
-        this.stemmer = new IteratedLovinsStemmer();
+        stemmer = new SnowballStemmer();
     }
 
     /**
@@ -60,21 +60,6 @@ public class PreProcessor {
     public String process(String s)
     {
         s = s.toLowerCase();
-
-        //opens stopwords.txt file and replaces all stopwords with ""
-        try(Scanner reader = new Scanner(getClass().getResourceAsStream("stopwords.txt")))
-        {
-            while(reader.hasNext())
-            {
-                String regexString = reader.next();
-                s = s.replaceAll("\\b" + regexString + "\\b", "");
-            }
-        }
-        catch(NullPointerException e)
-        {
-            System.err.println("stopwords.txt missing");
-            return "An Error Has Occurred";
-        }
 
         s = s.replaceAll("\\-", ""); //removes hyphens
         s = s.replaceAll("[^a-zA-Z0-9.?\\s]", ""); //removes other punctuation except '.' & '?'
@@ -127,3 +112,4 @@ public class PreProcessor {
         System.out.println();
     }
 }
+
