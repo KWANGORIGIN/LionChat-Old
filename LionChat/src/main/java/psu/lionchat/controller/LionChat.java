@@ -42,8 +42,6 @@ public class LionChat {
     private String currentUserId;
 
     public LionChat(Messenger messenger){
-        System.out.println("YEET");
-
         classifier = new MyNaiveBayesClassifier();
 //        lionDAO = new LionChatDAOImpl();
         convState = ConversationState.INTENTSTATE;
@@ -73,13 +71,7 @@ public class LionChat {
                     TextMessageEvent message = event.asTextMessageEvent();
                     this.currentUserId = message.senderId();
 
-                    try {
-                        sendTypingOn(currentUserId);
-                    } catch (MessengerApiException e) {
-                        e.printStackTrace();
-                    } catch (MessengerIOException e) {
-                        e.printStackTrace();
-                    }
+                    sendTypingOn(currentUserId);
 
                     getResponse(message.text());//Calls our method to do processing
 //                    sendResponse(this.userIntent.toString());
@@ -107,12 +99,24 @@ public class LionChat {
         }
     }
 
-    private void sendTypingOn(String recipientId) throws MessengerApiException, MessengerIOException {
-        this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_ON));
+    private void sendTypingOn(String recipientId){
+        try{
+            this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_ON));
+        }catch(MessengerApiException e){
+            e.printStackTrace();
+        }catch(MessengerIOException e){
+            e.printStackTrace();
+        }
     }
 
-    private void sendTypingOff(String recipientId) throws MessengerApiException, MessengerIOException {
-        this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_OFF));
+    private void sendTypingOff(String recipientId){
+        try{
+            this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_OFF));
+        }catch(MessengerApiException e){
+            e.printStackTrace();
+        }catch(MessengerIOException e){
+            e.printStackTrace();
+        }
     }
 
     public void getResponse(String message)
@@ -191,13 +195,7 @@ public class LionChat {
             storeRating(this.userIntent, rating);
             this.convState = ConversationState.INTENTSTATE;
 
-            try {
-                sendTypingOff(currentUserId);
-            } catch (MessengerApiException e) {
-                e.printStackTrace();
-            } catch (MessengerIOException e) {
-                e.printStackTrace();
-            }
+            sendTypingOff(currentUserId);
 
             //maybe an goodbye message?
         }
