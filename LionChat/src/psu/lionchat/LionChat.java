@@ -46,7 +46,9 @@ public class LionChat {
 
 		if(this.convState == ConversationState.RATINGSTATE)
 		{
+			//prompt for rating
 
+			storeRating(this.userIntent, Integer.valueOf(message));
 			this.convState = ConversationState.INTENTSTATE;
 		}
 
