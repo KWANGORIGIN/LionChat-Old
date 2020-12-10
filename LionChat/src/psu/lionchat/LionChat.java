@@ -160,15 +160,9 @@ public class LionChat {
 		return message;
 	}
 
-	public void sendDocument()
-	{
-
-	}
-
-
 	public void storeRating(Intent intent, int rating)
 	{
-
+		this.lionDAO.addUserRating(intent, rating);
 	}
 
 	public ModelAndView getHomePage(ModelMap model)
