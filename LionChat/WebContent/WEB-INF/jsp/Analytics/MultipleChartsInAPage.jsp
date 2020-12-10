@@ -15,10 +15,22 @@
 
 <script type="text/javascript">
 function enlarge(n) {
-	  alert($('chartContainer1').)
+	for (i = 1; i <= 4; i++){
+		if(i == n){
+			continue;
+		}
+		chart[i-1].container.remove()
+	}
+
+	chart[n-1].container.style.visibility = 'visible'
+	chart[n-1].container.style.width = '100%'
+	chart[n-1].container.style.height = '100%'
+	chart[n-1].render()
+
 }
+var chart = [null, null, null, null];
 $(function () {
-	var chart1 = new CanvasJS.Chart("chartContainer1", {
+	chart[0] = new CanvasJS.Chart("chartContainer1", {
         theme: "light2",
         animationEnabled: true,
         title: {
@@ -37,9 +49,9 @@ $(function () {
             dataPoints: ${dataPoints1},
         }]
     });
-    chart1.render();
-    
-	var chart2 = new CanvasJS.Chart("chartContainer2", {
+	chart[0].render();
+
+	chart[1] = new CanvasJS.Chart("chartContainer2", {
         title: {
             text: "Average Overall Ratings"
         },
@@ -67,9 +79,9 @@ $(function () {
         }
         ]
     });
-    chart2.render();
-    
-	var chart3 = new CanvasJS.Chart("chartContainer3", {
+	chart[1].render();
+
+	chart[2] = new CanvasJS.Chart("chartContainer3", {
         theme: "light2",
         animationEnabled: true,
         title: {
@@ -87,9 +99,9 @@ $(function () {
             dataPoints: ${dataPoints3}
         }]
     });
-    chart3.render();
-    
-    var chart4 = new CanvasJS.Chart("chartContainer4", {
+	chart[2].render();
+
+	chart[3] = new CanvasJS.Chart("chartContainer4", {
         theme: "light2",
         animationEnabled: true,
         title: {
@@ -97,7 +109,7 @@ $(function () {
         },
         axisY:{
             minimum: 0,
-            suffix: "   1\u2B50 Ratings" 
+			title: "1\u2B50 Ratings"
 		},
 		axisX:{
 			title: "Misclassified Intent of Users Question"
@@ -107,6 +119,6 @@ $(function () {
             dataPoints: ${dataPoints4}
         }]
     });
-    chart4.render();
+	chart[3].render();
 });
 </script>
