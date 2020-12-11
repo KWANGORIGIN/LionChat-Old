@@ -92,6 +92,8 @@
 		<!-- footer -->
 		<jsp:include page="footer.jsp" />
 		<!-- /footer -->
+
+
 	</div>
 </body>
 </html>

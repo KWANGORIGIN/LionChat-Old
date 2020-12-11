@@ -34,8 +34,23 @@ $(function () {
 	function compareDataPointYDescending(dataPoint1, dataPoint2) {
 		return dataPoint2.y - dataPoint1.y;
 	}
-	
+	var colors = [//colorSet Array
+		"#000088",
+		"#0e0e5d",
+		"#77aaff",
+		"#44aaff",
+		"#034c80",
+		"#25629b",
+		"#a6ced9"
+	].map((a) => ({sort: Math.random(), value: a}))
+			.sort((a, b) => a.sort - b.sort)
+			.map((a) => a.value);
+	CanvasJS.addColorSet("blues",colors);
+
 	chart[0] = new CanvasJS.Chart("chartContainer1", {
+		colorSet: [
+			"blues"
+		],
         theme: "light2",
         animationEnabled: true,
         title: {
@@ -57,7 +72,13 @@ $(function () {
 	chart[0].options.data[0].dataPoints.sort(compareDataPointYDescending);
 	chart[0].render();
 
+	colors.map((a) => ({sort: Math.random(), value: a}))
+			.sort((a, b) => a.sort - b.sort)
+			.map((a) => a.value);
 	chart[1] = new CanvasJS.Chart("chartContainer2", {
+		colorSet: [
+			"blues"
+		],
         title: {
             text: "Average Overall Ratings"
         },
@@ -87,7 +108,13 @@ $(function () {
     });
 	chart[1].render();
 
+	colors.map((a) => ({sort: Math.random(), value: a}))
+			.sort((a, b) => a.sort - b.sort)
+			.map((a) => a.value);
 	chart[2] = new CanvasJS.Chart("chartContainer3", {
+		colorSet: [
+			"blues"
+		],
         theme: "light2",
         animationEnabled: true,
         title: {
@@ -108,7 +135,14 @@ $(function () {
 	chart[2].options.data[0].dataPoints.sort(compareDataPointYDescending);
 	chart[2].render();
 
+	colors.map((a) => ({sort: Math.random(), value: a}))
+			.sort((a, b) => a.sort - b.sort)
+			.map((a) => a.value);
+
 	chart[3] = new CanvasJS.Chart("chartContainer4", {
+		colorSet: [
+			"blues"
+		],
         theme: "light2",
         animationEnabled: true,
         title: {
