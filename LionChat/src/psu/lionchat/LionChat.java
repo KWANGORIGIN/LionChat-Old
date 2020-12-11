@@ -138,7 +138,7 @@ public class LionChat {
 
 			if(this.userIntent instanceof GreetingIntent)
 			{
-				sendResponse("Hello there!");
+				sendResponse("Hello! I am LionChat: the ultimate chatbot for all things Penn State! We Are!");
 				return;
 			}
 
@@ -182,7 +182,7 @@ public class LionChat {
 				this.convState = ConversationState.INTENTSTATE;
 				message = null;
 
-				sendResponse("Please enter a question.");
+				sendResponse("I'm sorry I wasn't able to answer your question! Please try rephrasing or asking a new question");
 
 				return;
 				//wait for response

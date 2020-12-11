@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="LionChat:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>LionChat</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="LionChat-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="LionChat:war exploded" />
+    </root>
+  </artifact>
+</component>
