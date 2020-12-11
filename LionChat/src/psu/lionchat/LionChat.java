@@ -27,6 +27,10 @@ import psu.lionchat.intent.Intent;
 import psu.lionchat.intent.intents.ErieInfoIntent;
 import psu.lionchat.intent.intents.GreetingIntent;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+
 import static com.github.messenger4j.Messenger.*;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -90,19 +94,34 @@ public class LionChat {
 		}
 	}
 
+	File f = new File(System.getProperty("user.home")  + "/Desktop/lionoutput.txt");
+	PrintWriter pw;
 	public void sendResponse(String message) {
-		try {
-			final IdRecipient recipient = IdRecipient.create(currentUserId);
-			final NotificationType notificationType = NotificationType.REGULAR;
-			final String metadata = "DEVELOPER_DEFINED_METADATA";
+		if(pw == null){
+			try{
+				new PrintWriter(new FileOutputStream(f));
+			}catch(Exception e){
 
-			final TextMessage textMessage = TextMessage.create(message, empty(), of(metadata));
-			final MessagePayload messagePayload = MessagePayload.create(recipient, MessagingType.RESPONSE, textMessage, of(notificationType), empty());
-			this.messenger.send(messagePayload);
-
-		} catch (MessengerApiException | MessengerIOException e) {
-			System.out.println("Error sending message to user");
+			}
 		}
+		pw.println(message);
+		if(message.equals("close")){
+			pw.close();
+			pw = null;
+		}
+		if(true)return;
+//		try {
+//			final IdRecipient recipient = IdRecipient.create(currentUserId);
+//			final NotificationType notificationType = NotificationType.REGULAR;
+//			final String metadata = "DEVELOPER_DEFINED_METADATA";
+//
+//			final TextMessage textMessage = TextMessage.create(message, empty(), of(metadata));
+//			final MessagePayload messagePayload = MessagePayload.create(recipient, MessagingType.RESPONSE, textMessage, of(notificationType), empty());
+//			this.messenger.send(messagePayload);
+//
+//		} catch (MessengerApiException | MessengerIOException e) {
+//			System.out.println("Error sending message to user");
+//		}
 	}
 
 	private void sendTypingOn(String recipientId){
@@ -123,6 +142,12 @@ public class LionChat {
 		}catch(MessengerIOException e){
 			e.printStackTrace();
 		}
+	}
+
+	@RequestMapping(value = "/test", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void test(@RequestBody String message){
+		this.getResponse(message);
 	}
 
 	public void getResponse(String message)
