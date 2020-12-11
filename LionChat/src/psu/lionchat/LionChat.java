@@ -22,16 +22,11 @@ import org.springframework.web.servlet.ModelAndView;
 import psu.lionchat.classifier.ClassifierIF;
 import psu.lionchat.classifier.MyNaiveBayesClassifier;
 import psu.lionchat.dao.LionChatDAO;
-import psu.lionchat.dao.LionChatDAOImpl;
 import psu.lionchat.entity.Entity;
 import psu.lionchat.intent.Intent;
 import psu.lionchat.intent.intents.ErieInfoIntent;
 import psu.lionchat.intent.intents.GreetingIntent;
 import psu.lionchat.intent.intents.UnknownIntent;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
 
 import static com.github.messenger4j.Messenger.*;
 import static java.util.Optional.empty;
@@ -41,7 +36,6 @@ import static java.util.Optional.of;
 @RequestMapping("/lionchat")
 public class LionChat {
 	private final Messenger messenger;
-	//private static LionChat lionChat = new LionChat();
 	private final ClassifierIF classifier;
 	private Intent userIntent;
 	private ConversationState convState;
@@ -134,12 +128,6 @@ public class LionChat {
 			e.printStackTrace();
 		}
 	}
-
-//	@RequestMapping(value = "/test", method = RequestMethod.POST)
-//	@ResponseStatus(value = HttpStatus.OK)
-//	public void test(@RequestBody String message){
-//		this.getResponse(message);
-//	}
 
 	public void getResponse(String message)
 	{
@@ -243,11 +231,6 @@ public class LionChat {
 
 	}
 
-//	public void sendResponse(String message)
-//	{
-//		//call messenger4J api
-//	}
-
 	public String getEntityInfoFromUser(String message)
 	{
 		//loop through each entity in userIntent
@@ -321,10 +304,6 @@ public class LionChat {
 		return null;
 	}
 
-
-//	public static LionChat getInstance() {
-//		return lionChat;
-//	}
 
 	public ClassifierIF getClassifier() {
 		return classifier;
