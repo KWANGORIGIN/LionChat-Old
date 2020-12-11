@@ -51,7 +51,7 @@ $(function () {
 		},
         data: [{
             type: "column",
-            dataPoints: ${dataPoints1},
+            dataPoints: ${dataPoints1}
         }]
     });
 	chart[0].options.data[0].dataPoints.sort(compareDataPointYDescending);
