@@ -57,7 +57,15 @@ public class DateTimeEntity extends Entity {
 		}
 		catch(NullPointerException e)
 		{
-			System.err.println("Invalid date format.");
+			if(!((info).equalsIgnoreCase("today")))
+			{
+				System.err.println("Invalid date format.");
+			}
+			else
+			{
+				this.hasInfo = true;
+			}
+
 			return this.hasInfo;
 		}
 	}
