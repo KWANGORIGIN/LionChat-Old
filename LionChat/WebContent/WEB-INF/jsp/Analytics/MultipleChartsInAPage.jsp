@@ -14,6 +14,7 @@
 	style='width: 49%; height: 300px; display: inline-block;'></div>
 
 <script type="text/javascript">
+/* document.getElementsByTagName("h1")[0].style.color='#000088'; */
 function enlarge(n) {
 	for (i = 1; i <= 4; i++){
 		if(i == n){

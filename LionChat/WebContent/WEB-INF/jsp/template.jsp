@@ -80,7 +80,7 @@
 
 	<div id="page-content-wrapper" class="page-content-toggle">
 		<div class="container-fluid">
-			<h1>${title}</h1>
+			<h1 style="color: #000088">${title}</h1>
 
 			<div class="row">
 				<div id="content" class="col-md-8 col-md-offset-1 col-xs-12">
