@@ -85,7 +85,6 @@ $(function () {
         }
         ]
     });
-	chart[1].options.data[0].dataPoints.sort(compareDataPointYDescending);
 	chart[1].render();
 
 	chart[2] = new CanvasJS.Chart("chartContainer3", {
