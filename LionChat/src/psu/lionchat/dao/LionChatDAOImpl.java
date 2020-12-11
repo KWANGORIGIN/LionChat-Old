@@ -46,8 +46,9 @@ public class LionChatDAOImpl implements LionChatDAO {
 		if (intent instanceof CampusEventsIntent) {
 			for (Entity e : intent.getEntities()) {
 				if (e instanceof DateTimeEntity) {
-					Timestamp after = ((DateTimeEntity)e).getTimestamp();
-					Timestamp before = Timestamp.valueOf(((DateTimeEntity)e).getTimestamp().toLocalDateTime().plusDays(1));
+					Timestamp after = ((DateTimeEntity) e).getTimestamp();
+					Timestamp before = Timestamp
+							.valueOf(((DateTimeEntity) e).getTimestamp().toLocalDateTime().plusDays(1));
 					String SQL = String.format(
 							"select * from lionchat.campuseventsdocuments WHERE starttime between '%s' and '%s' and status='CONFIRMED'",
 							after, before);
@@ -58,8 +59,23 @@ public class LionChatDAOImpl implements LionChatDAO {
 							Timestamp starttime = rs.getTimestamp("starttime");
 							long duration = rs.getTimestamp("endtime").getTime() - starttime.getTime();
 							long minutes = duration / 1000 / 60;
-							return String.format("%s\nStarts: %s\nDuration: %d minutes\nLocation: %s\nDescription %s\n",
-									rs.getString("summary"), starttime, minutes, rs.getString("location"),
+							long hours = 0;
+							StringBuilder timeString = new StringBuilder();
+							if (minutes >= 60) {
+								hours = minutes / 60;
+								minutes %= 60;
+								timeString.append(hours + " hour");
+								if (hours > 1) {
+									timeString.append("s ");
+								} else {
+									timeString.append(" ");
+								}
+							}
+							if (minutes != 0) {
+								timeString.append(minutes + " minutes");
+							}
+							return String.format("%s\nStarts: %s\nDuration: %s\nLocation: %s\nDescription %s\n",
+									rs.getString("summary"), starttime, timeString.toString(), rs.getString("location"),
 									rs.getString("description"));
 						}
 					});
@@ -78,7 +94,7 @@ public class LionChatDAOImpl implements LionChatDAO {
 						SQL = "select * from lionchat.wifiassistancedocuments where os='windows'";
 					} else if (OS.equals("macos")) {
 						SQL = "select * from lionchat.wifiassistancedocuments where os='macos'";
-					}else {
+					} else {
 						return "Invalid Input";
 					}
 					List<String> strings = jdbcTemplateObject.query(SQL, new RowMapper<String>() {
@@ -98,7 +114,7 @@ public class LionChatDAOImpl implements LionChatDAO {
 
 	@Override
 	public void addUserRating(Intent intent, int rating) {
-		if(intent == null) {
+		if (intent == null) {
 			System.err.println("Intent was null!");
 			return;
 		}

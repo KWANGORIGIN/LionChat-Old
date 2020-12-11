@@ -288,7 +288,7 @@ public class LionChat {
 				LionChatDAO lionDAO = (LionChatDAO) context.getBean("LionChatDAOImpl");
 				this.document = lionDAO.getDocumentFromIntent(intent);
 
-				if(this.document == null)
+				if(this.document == null || this.document.trim().isEmpty())
 				{
 					this.document = "Sorry!  No information could be found.";
 				}
