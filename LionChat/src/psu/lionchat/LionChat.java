@@ -46,7 +46,6 @@ public class LionChat {
 	private ConversationState convState;
 	private String document;
 	private String currentUserId;
-	private long lastMessageTime;
 
 	@RequestMapping(value = "/get-intent", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
@@ -143,14 +142,6 @@ public class LionChat {
 
 	public void getResponse(String message)
 	{
-		// Check if the user has became inactive and reset the conversation state if they have.
-		if(lastMessageTime + 60*1000 < System.nanoTime()/1000000){
-			this.convState = ConversationState.INTENTSTATE;
-			lastMessageTime = System.nanoTime()/1000000;
-			return;
-		}
-		lastMessageTime = System.nanoTime()/1000000;
-
 		//code runs depending on current conversation state
 		if(this.convState == ConversationState.INTENTSTATE) //if IntentState, classify
 		{
