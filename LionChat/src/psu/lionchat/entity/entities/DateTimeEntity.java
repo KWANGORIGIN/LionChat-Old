@@ -16,7 +16,7 @@ public class DateTimeEntity extends Entity {
 	{
 		this.dateTime = new GregorianCalendar();
 		this.entityName = "dateTime";
-		this.prompt = "Please enter the date and time of interest in MM-dd-yyyy HH AM/PM format.";
+		this.prompt = "Please enter the date and time of interest in MM-dd-yyyy format.";
 	}
 	@Override
 	public String getEntityInformation() {
@@ -46,7 +46,7 @@ public class DateTimeEntity extends Entity {
 
 	@Override
 	public boolean setEntityInformation(String info) {
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy hh a");
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
 
 		try
 		{
