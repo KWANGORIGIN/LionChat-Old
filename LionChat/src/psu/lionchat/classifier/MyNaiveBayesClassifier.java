@@ -58,7 +58,7 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 		{
 			return new GreetingIntent();
 		}
-		
+		System.out.println("Null " + intentString + " " + utterance);
 		return null;
 	}
 

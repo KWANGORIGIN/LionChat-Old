@@ -78,6 +78,8 @@ public class LionChatDAOImpl implements LionChatDAO {
 						SQL = "select * from lionchat.wifiassistancedocuments where os='windows'";
 					} else if (OS.equals("macos")) {
 						SQL = "select * from lionchat.wifiassistancedocuments where os='macos'";
+					}else {
+						return "Invalid Input";
 					}
 					List<String> strings = jdbcTemplateObject.query(SQL, new RowMapper<String>() {
 						@Override
@@ -96,6 +98,10 @@ public class LionChatDAOImpl implements LionChatDAO {
 
 	@Override
 	public void addUserRating(Intent intent, int rating) {
+		if(intent == null) {
+			System.err.println("Intent was null!");
+			return;
+		}
 		String SQL = "insert into lionchat.reviews (" + intent.getClass().getSimpleName() + "Rating" + ") values ("
 				+ rating + ")";
 		jdbcTemplateObject.update(SQL);

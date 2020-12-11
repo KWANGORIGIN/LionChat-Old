@@ -13,6 +13,7 @@ import com.github.messenger4j.send.recipient.IdRecipient;
 import com.github.messenger4j.send.senderaction.SenderAction;
 import com.github.messenger4j.webhook.event.TextMessageEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
@@ -41,17 +42,22 @@ public class LionChat {
 	private final Messenger messenger;
 	//private static LionChat lionChat = new LionChat();
 	private final ClassifierIF classifier;
-	private final LionChatDAO lionDAO;
 	private Intent userIntent;
 	private ConversationState convState;
 	private String document;
 	private String currentUserId;
 	private long lastMessageTime;
 
+	@RequestMapping(value = "/get-intent", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void getIntent(@RequestBody String utterance) {
+		System.out.println(utterance);
+		System.out.println(this.getClassifier().getIntentString(utterance));
+	}
+
 	@Autowired
-	public LionChat(){
+	public LionChat() {
 		classifier = new MyNaiveBayesClassifier();
-        lionDAO = new LionChatDAOImpl();
 		convState = ConversationState.INTENTSTATE;
 		document = "";
 
@@ -94,34 +100,19 @@ public class LionChat {
 		}
 	}
 
-	File f = new File(System.getProperty("user.home")  + "/Desktop/lionoutput.txt");
-	PrintWriter pw;
 	public void sendResponse(String message) {
-		if(pw == null){
-			try{
-				new PrintWriter(new FileOutputStream(f));
-			}catch(Exception e){
+		try {
+			final IdRecipient recipient = IdRecipient.create(currentUserId);
+			final NotificationType notificationType = NotificationType.REGULAR;
+			final String metadata = "DEVELOPER_DEFINED_METADATA";
 
-			}
+			final TextMessage textMessage = TextMessage.create(message, empty(), of(metadata));
+			final MessagePayload messagePayload = MessagePayload.create(recipient, MessagingType.RESPONSE, textMessage, of(notificationType), empty());
+			this.messenger.send(messagePayload);
+
+		} catch (MessengerApiException | MessengerIOException e) {
+			System.out.println("Error sending message to user");
 		}
-		pw.println(message);
-		if(message.equals("close")){
-			pw.close();
-			pw = null;
-		}
-		if(true)return;
-//		try {
-//			final IdRecipient recipient = IdRecipient.create(currentUserId);
-//			final NotificationType notificationType = NotificationType.REGULAR;
-//			final String metadata = "DEVELOPER_DEFINED_METADATA";
-//
-//			final TextMessage textMessage = TextMessage.create(message, empty(), of(metadata));
-//			final MessagePayload messagePayload = MessagePayload.create(recipient, MessagingType.RESPONSE, textMessage, of(notificationType), empty());
-//			this.messenger.send(messagePayload);
-//
-//		} catch (MessengerApiException | MessengerIOException e) {
-//			System.out.println("Error sending message to user");
-//		}
 	}
 
 	private void sendTypingOn(String recipientId){
@@ -144,17 +135,19 @@ public class LionChat {
 		}
 	}
 
-	@RequestMapping(value = "/test", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.OK)
-	public void test(@RequestBody String message){
-		this.getResponse(message);
-	}
+//	@RequestMapping(value = "/test", method = RequestMethod.POST)
+//	@ResponseStatus(value = HttpStatus.OK)
+//	public void test(@RequestBody String message){
+//		this.getResponse(message);
+//	}
 
 	public void getResponse(String message)
 	{
 		// Check if the user has became inactive and reset the conversation state if they have.
 		if(lastMessageTime + 60*1000 < System.nanoTime()/1000000){
 			this.convState = ConversationState.INTENTSTATE;
+			lastMessageTime = System.nanoTime()/1000000;
+			return;
 		}
 		lastMessageTime = System.nanoTime()/1000000;
 
@@ -168,7 +161,11 @@ public class LionChat {
 				sendResponse("Hello there!");
 				return;
 			}
-
+			
+			if(this.userIntent == null) {
+				return;
+			}
+			
 			this.convState = ConversationState.ENTITYSTATE;
 
 			if(this.userIntent.getEntities().size() > 0)
@@ -190,14 +187,10 @@ public class LionChat {
 			if(message == null)
 			{
 				sendResponse("Did this answer your question, yes or no?");
-				if(true)
-				{
-					return;
-					//get user input from messenger
-				}
+				return;
 			}
 
-			if(message.equals("no"))
+			if(message.toLowerCase().equals("no"))
 			{
 
 				this.convState = ConversationState.INTENTSTATE;
@@ -208,7 +201,7 @@ public class LionChat {
 				return;
 				//wait for response
 			}
-			else if(message.equals("yes"))
+			else if(message.toLowerCase().equals("yes"))
 			{
 				this.convState = ConversationState.RATINGSTATE;
 				message = null;
@@ -294,7 +287,12 @@ public class LionChat {
 
 	public void storeRating(Intent intent, int rating)
 	{
-		this.lionDAO.addUserRating(intent, rating);
+		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
+			LionChatDAO lionDAO = (LionChatDAO) context.getBean("LionChatDAOImpl");
+			lionDAO.addUserRating(intent, rating);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void getAnswer(Intent intent, String message)
@@ -305,7 +303,12 @@ public class LionChat {
 		}
 		else
 		{
-			this.document = this.lionDAO.getDocumentFromIntent(intent);
+			try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
+				LionChatDAO lionDAO = (LionChatDAO) context.getBean("LionChatDAOImpl");
+				this.document = lionDAO.getDocumentFromIntent(intent);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

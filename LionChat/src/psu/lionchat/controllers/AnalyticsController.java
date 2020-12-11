@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import psu.lionchat.LionChat;
 import psu.lionchat.dao.LionChatDAO;
 import psu.lionchat.intent.intents.CampusEventsIntent;
 import psu.lionchat.model.IntentRatingsModel;
@@ -47,20 +48,9 @@ public class AnalyticsController {
 		modelAndView.addObject("dataPoints2", gsonObj.toJson(overallRatings));
 		modelAndView.addObject("dataPoints3", gsonObj.toJson(intentFrequencies));
 		modelAndView.addObject("dataPoints4", gsonObj.toJson(commonlyMisclassifiedIntents));
-		
+
 		return modelAndView;
 	}
-
-//	// TODO: Remove this once testing is done.
-//	@RequestMapping(value = "/view-analytics/get-intent", method = RequestMethod.POST)
-//	@ResponseStatus(value = HttpStatus.OK)
-//	public void getIntent(@RequestBody String utterance) {
-//		System.out.println(utterance);
-//		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-//		LionChatDAO dao = (LionChatDAO) context.getBean("LionChatDAOImpl");
-//		dao.addUserRating(new CampusEventsIntent(), Integer.parseInt(utterance));
-////		System.out.println(LionChat.getInstance().getClassifier().getIntentString(utterance));
-//	}
 
 	@RequestMapping(value = "/view-analytics/overall-ratings", method = RequestMethod.GET)
 	public ModelAndView getOverallRatings() {
