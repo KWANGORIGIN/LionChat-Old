@@ -206,10 +206,7 @@ public class LionChat {
 			if(message == null)
 			{
 				sendResponse("How would you rate your LionChat experience, 1 to 5 stars?");
-
-				if (true) {
-					return;
-				}
+				return;
 			}
 
 			//wait for rating
