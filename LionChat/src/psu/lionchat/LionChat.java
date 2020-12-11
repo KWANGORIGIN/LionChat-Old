@@ -27,6 +27,7 @@ import psu.lionchat.entity.Entity;
 import psu.lionchat.intent.Intent;
 import psu.lionchat.intent.intents.ErieInfoIntent;
 import psu.lionchat.intent.intents.GreetingIntent;
+import psu.lionchat.intent.intents.UnknownIntent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -150,6 +151,12 @@ public class LionChat {
 			if(this.userIntent instanceof GreetingIntent)
 			{
 				sendResponse("Hello there!");
+				return;
+			}
+
+			if(this.userIntent instanceof UnknownIntent)
+			{
+				sendResponse("I'm sorry! I couldn't understand you.  Please repeat your question.");
 				return;
 			}
 			

@@ -11,10 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 
 import psu.lionchat.intent.Intent;
-import psu.lionchat.intent.intents.CampusEventsIntent;
-import psu.lionchat.intent.intents.ErieInfoIntent;
-import psu.lionchat.intent.intents.GreetingIntent;
-import psu.lionchat.intent.intents.WifiAssistanceIntent;
+import psu.lionchat.intent.intents.*;
 
 public class MyNaiveBayesClassifier implements ClassifierIF {
 
@@ -57,6 +54,9 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 		}else if(intentString.equals("GreetingIntent"))
 		{
 			return new GreetingIntent();
+		}else if(intentString.equals("unknownIntent"))
+		{
+			return new UnknownIntent();
 		}
 		System.out.println("Null " + intentString + " " + utterance);
 		return null;
