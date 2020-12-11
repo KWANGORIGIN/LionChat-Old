@@ -1,0 +1,105 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="LionChat:war exploded">
+    <output-path>$PROJECT_DIR$/target/LionChat-0.0.1-SNAPSHOT</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>LionChat</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="LionChat" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-web:2.3.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.3.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:2.3.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.3.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-logging:2.3.5.RELEASE" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.2.3" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.2.3" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-to-slf4j:2.13.3" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.13.3" />
+          <element id="library" level="project" name="Maven: org.slf4j:jul-to-slf4j:1.7.30" />
+          <element id="library" level="project" name="Maven: jakarta.annotation:jakarta.annotation-api:1.3.5" />
+          <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.26" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-json:2.3.5.RELEASE" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.11.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.11.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.11.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.11.3" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-tomcat:2.3.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.39" />
+          <element id="library" level="project" name="Maven: org.glassfish:jakarta.el:3.0.3" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.39" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.2.10.RELEASE" />
+          <element id="library" level="project" name="Maven: com.github.messenger4j:messenger4j:1.1.0" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.30" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.8.6" />
+          <element id="library" level="project" name="Maven: com.squareup.okhttp3:okhttp:3.14.9" />
+          <element id="library" level="project" name="Maven: com.squareup.okio:okio:1.17.2" />
+          <element id="library" level="project" name="Maven: nz.ac.waikato.cms.weka:weka-stable:3.8.4" />
+          <element id="library" level="project" name="Maven: com.github.vbmacher:java-cup:11b-20160615" />
+          <element id="library" level="project" name="Maven: com.github.vbmacher:java-cup-runtime:11b-20160615" />
+          <element id="library" level="project" name="Maven: nz.ac.waikato.cms.weka.thirdparty:bounce:0.18" />
+          <element id="library" level="project" name="Maven: com.googlecode.matrix-toolkits-java:mtj:1.0.4" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_ref-osx-x86_64:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:native_ref-java:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil:jniloader:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_ref-linux-x86_64:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_ref-linux-i686:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_ref-win-x86_64:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_ref-win-i686:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_ref-linux-armhf:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_system-osx-x86_64:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:native_system-java:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_system-linux-x86_64:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_system-linux-i686:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_system-linux-armhf:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_system-win-x86_64:natives:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:netlib-native_system-win-i686:natives:1.1" />
+          <element id="library" level="project" name="Maven: net.sourceforge.f2j:arpack_combined_all:0.1" />
+          <element id="library" level="project" name="Maven: com.googlecode.netlib-java:netlib-java:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fommil.netlib:core:1.1" />
+          <element id="library" level="project" name="Maven: com.github.fracpete:jfilechooser-bookmarks:0.1.6" />
+          <element id="library" level="project" name="Maven: com.github.fracpete:jclipboardhelper:0.1.0" />
+          <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:3.0.8" />
+          <element id="library" level="project" name="Maven: jakarta.activation:jakarta.activation-api:1.2.2" />
+          <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" />
+          <element id="library" level="project" name="Maven: org.glassfish.jaxb:jaxb-runtime:2.3.3" />
+          <element id="library" level="project" name="Maven: org.glassfish.jaxb:txw2:2.3.3" />
+          <element id="library" level="project" name="Maven: com.sun.activation:jakarta.activation:1.2.2" />
+          <element id="library" level="project" name="Maven: junit:junit:4.13.1" />
+          <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:2.2" />
+          <element id="library" level="project" name="Maven: org.hamcrest:hamcrest:2.2" />
+          <element id="library" level="project" name="Maven: org.junit.jupiter:junit-jupiter:5.6.3" />
+          <element id="library" level="project" name="Maven: org.junit.jupiter:junit-jupiter-api:5.6.3" />
+          <element id="library" level="project" name="Maven: org.apiguardian:apiguardian-api:1.1.0" />
+          <element id="library" level="project" name="Maven: org.opentest4j:opentest4j:1.2.0" />
+          <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-commons:1.6.3" />
+          <element id="library" level="project" name="Maven: org.junit.jupiter:junit-jupiter-params:5.6.3" />
+          <element id="library" level="project" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.6.3" />
+          <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-engine:1.6.3" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/LionChat-0.0.1-SNAPSHOT/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="LionChat/web/Web" />
+    </root>
+  </artifact>
+</component>
