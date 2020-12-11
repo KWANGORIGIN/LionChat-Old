@@ -287,6 +287,12 @@ public class LionChat {
 			try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
 				LionChatDAO lionDAO = (LionChatDAO) context.getBean("LionChatDAOImpl");
 				this.document = lionDAO.getDocumentFromIntent(intent);
+
+				if(this.document == null)
+				{
+					this.document = "Sorry!  No information could be found.";
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
