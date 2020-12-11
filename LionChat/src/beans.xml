@@ -11,11 +11,6 @@
 		<property name="username" value="root" />
 		<property name="password" value="root" />
 	</bean>
-	
-	<!-- <bean id="DataPointsDAOImpl" 
-      class="com.canvasjs.dao.DataPointsDAOImpl">
-      <property name="dataSource"  ref="dataSource" />    
-    </bean> -->
     
     <bean id = "LionChatDAOImpl"
     	class="psu.lionchat.dao.LionChatDAOImpl">

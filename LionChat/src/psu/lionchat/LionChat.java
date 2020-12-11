@@ -1,22 +1,6 @@
 package psu.lionchat;
 
-import org.springframework.ui.ModelMap;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.github.messenger4j.Messenger;
-
-import psu.lionchat.classifier.ClassifierIF;
-import psu.lionchat.classifier.MyNaiveBayesClassifier;
-import psu.lionchat.dao.LionChatDAO;
-import psu.lionchat.dao.LionChatDAOImpl;
-import psu.lionchat.entity.Entity;
-import psu.lionchat.intent.Intent;
-import psu.lionchat.intent.intents.ErieInfoIntent;
-import psu.lionchat.intent.intents.GreetingIntent;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import com.github.messenger4j.exception.MessengerApiException;
 import com.github.messenger4j.exception.MessengerIOException;
 import com.github.messenger4j.exception.MessengerVerificationException;
@@ -27,18 +11,21 @@ import com.github.messenger4j.send.SenderActionPayload;
 import com.github.messenger4j.send.message.TextMessage;
 import com.github.messenger4j.send.recipient.IdRecipient;
 import com.github.messenger4j.send.senderaction.SenderAction;
-import org.springframework.web.bind.annotation.*;
-
-//import com.github.messenger4j.Messenger;
 import com.github.messenger4j.webhook.event.TextMessageEvent;
-
-//import psu.lionchat.classifier.MyNaiveBayesClassifier;
-////import psu.lionchat.dao.LionChatDAO;
-////import psu.lionchat.dao.LionChatDAOImpl;
-//import psu.lionchat.entity.Entity;
-//import psu.lionchat.intent.Intent;
-//import psu.lionchat.intent.intents.ErieInfoIntent;
-//import psu.lionchat.intent.intents.GreetingIntent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import psu.lionchat.classifier.ClassifierIF;
+import psu.lionchat.classifier.MyNaiveBayesClassifier;
+import psu.lionchat.dao.LionChatDAO;
+import psu.lionchat.dao.LionChatDAOImpl;
+import psu.lionchat.entity.Entity;
+import psu.lionchat.intent.Intent;
+import psu.lionchat.intent.intents.ErieInfoIntent;
+import psu.lionchat.intent.intents.GreetingIntent;
 
 import static com.github.messenger4j.Messenger.*;
 import static java.util.Optional.empty;
@@ -46,7 +33,6 @@ import static java.util.Optional.of;
 
 @RestController
 @RequestMapping("/lionchat")
-
 public class LionChat {
 	private final Messenger messenger;
 	//private static LionChat lionChat = new LionChat();
@@ -56,14 +42,16 @@ public class LionChat {
 	private ConversationState convState;
 	private String document;
 	private String currentUserId;
+	private long lastMessageTime;
 
-	public LionChat(Messenger messenger){
+	@Autowired
+	public LionChat(){
 		classifier = new MyNaiveBayesClassifier();
         lionDAO = new LionChatDAOImpl();
 		convState = ConversationState.INTENTSTATE;
 		document = "";
 
-		this.messenger = messenger;
+		this.messenger = Messenger.create("EAADAZBEirnFQBAP8z2bOax6fDZC97ZA9jcbfgaTbg512mTxKMJLcEqAZANX8GdU3743JABJ4sH47ySZBZCFkxr9hCj7LjDC5kdIEeqYkDGC38btZBPqE1JVPAZCO4KqdBjSZBqtSZBYLRoGQQDwrlCy9QyO6brZAHENyCewv7kxG1MNJAZDZD", "3d00de1106c4ab254deb9aeb6d1d6d21", "YeetYeetYeet");
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -89,6 +77,8 @@ public class LionChat {
 					this.currentUserId = message.senderId();
 
 					sendTypingOn(currentUserId);//Indicates to user that LionChat is processing
+
+					System.out.println("The message: " + message.toString());
 
 					getResponse(message.text());
 				}
@@ -137,6 +127,12 @@ public class LionChat {
 
 	public void getResponse(String message)
 	{
+		// Check if the user has became inactive and reset the conversation state if they have.
+		if(lastMessageTime + 60*1000 < System.nanoTime()/1000000){
+			this.convState = ConversationState.INTENTSTATE;
+		}
+		lastMessageTime = System.nanoTime()/1000000;
+
 		//code runs depending on current conversation state
 		if(this.convState == ConversationState.INTENTSTATE) //if IntentState, classify
 		{

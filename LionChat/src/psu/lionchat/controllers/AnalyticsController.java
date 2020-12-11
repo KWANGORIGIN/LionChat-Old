@@ -26,136 +26,55 @@ import psu.lionchat.model.IntentRatingsModel;
 @Controller
 public class AnalyticsController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home(ModelMap model) {
+	public ModelAndView getHomePage(ModelMap model) {
 		ModelAndView modelAndView = new ModelAndView("Analytics/MultipleChartsInAPage");
-		LionChatDAO dataPoints;
+		LionChatDAO dao;
 		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
-			dataPoints = (LionChatDAO) context.getBean("LionChatDAOImpl");
+			dao = (LionChatDAO) context.getBean("LionChatDAOImpl");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ModelAndView("Analytics/Error");
 		}
 		
-		List<Object> averageIntentRatings = this.getAverageRatingsMap(dataPoints);
-		List<Object> overallRatings = this.getOverallRatingsMap(dataPoints);
-		List<Object> intentFrequencies = this.getFrequenciesMap(dataPoints);
-		List<Object> commonlyMisclassifiedIntents = getCommonlyMisclassifiedIntentsMap(dataPoints);
-//		List<Object> chart = getCommonlyMisclassifiedIntentsMap(dataPoints);
-		
+		List<Object> averageIntentRatings = this.getAverageRatingsMap(dao);
+		List<Object> overallRatings = this.getOverallRatingsMap(dao);
+		List<Object> intentFrequencies = this.getFrequenciesMap(dao);
+		List<Object> commonlyMisclassifiedIntents = getCommonlyMisclassifiedIntentsMap(dao);
+
 		Gson gsonObj = new Gson();
 		modelAndView.addObject("title", "Home");
 		modelAndView.addObject("dataPoints1", gsonObj.toJson(averageIntentRatings));
 		modelAndView.addObject("dataPoints2", gsonObj.toJson(overallRatings));
 		modelAndView.addObject("dataPoints3", gsonObj.toJson(intentFrequencies));
 		modelAndView.addObject("dataPoints4", gsonObj.toJson(commonlyMisclassifiedIntents));
-//		System.out.println(modelAndView.getModelMap());
-		//modelAndView = new ModelAndView("Analytics/MultipleChartsInAPage");
-//		modelAndView.addObject("dataPoints", gsonObj.toJson(chart));
 		
 		return modelAndView;
 	}
-//	@RequestMapping(value = "/data-from-database", method = RequestMethod.GET)
-//	public ModelAndView dataFromDatabase(ModelMap model) {
-//		ModelAndView modelAndView;
-//		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
-//			DataPointsDAOImpl dataPoints = (DataPointsDAOImpl) context.getBean("DataPointsDAOImpl");
-//			Gson gsonObj = new Gson();
-//			modelAndView = new ModelAndView("Analytics/DataFromDatabase");
-//			modelAndView.addObject("title", "Render Data From Database");
-//
-//			modelAndView.addObject("dataPoints", gsonObj.toJson(dataPoints.getDataPoints()));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			modelAndView = new ModelAndView("Analytics/Error");
-//			modelAndView.addObject("title", "Render Data From Database");
-//		}
-//		return modelAndView;
-//	}
 
-//	@RequestMapping(value = "/analytics", method = RequestMethod.GET)
-//	public ModelAndView syncMultipleCharts(ModelMap model) {
-//		Gson gsonObj = new Gson();
-//		String dataPoints1 = "";
-//		String dataPoints2 = "";
-//
-//		Map<Object, Object> map = new HashMap<Object, Object>();
-//		java.util.List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
-//		int yVal = 20;
-//
-//		for (int i = 0; i <= 1000; i++) {
-//			yVal = (int) (yVal + Math.round(5 + Math.random() * (-5 - 5)));
-//			map = new HashMap<Object, Object>();
-//			map.put("x", i++);
-//			map.put("y", yVal);
-//			list.add(map);
-//		}
-//		dataPoints1 = gsonObj.toJson(list);
-//
-//		list = new ArrayList<Map<Object, Object>>();
-//		for (int i = 0; i <= 1000; i++) {
-//			yVal = (int) (yVal + Math.round(5 + Math.random() * (-5 - 5)));
-//			map = new HashMap<Object, Object>();
-//			map.put("x", i++);
-//			map.put("y", yVal);
-//			list.add(map);
-//		}
-//		dataPoints2 = gsonObj.toJson(list);
-//
-//		ModelAndView modelAndView = new ModelAndView("Analytics/SyncMultipleCharts");
-//		modelAndView.addObject("title", "Sync Multiple Charts");
-//		modelAndView.addObject("dataPoints1", dataPoints1);
-//		modelAndView.addObject("dataPoints2", dataPoints2);
-//		return modelAndView;
-//	}
-
-	// TODO: Remove this once testing is done.
-	@RequestMapping(value = "/view-analytics/get-intent", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.OK)
-	public void getIntent(@RequestBody String utterance) {
-		System.out.println(utterance);
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-		LionChatDAO dataPoints = (LionChatDAO) context.getBean("LionChatDAOImpl");
-		dataPoints.addUserRating(new CampusEventsIntent(), Integer.parseInt(utterance));
-//		System.out.println(LionChat.getInstance().getClassifier().getIntentString(utterance));
-	}
-
-//	@RequestMapping(value = "/test-database", method = RequestMethod.POST)
+//	// TODO: Remove this once testing is done.
+//	@RequestMapping(value = "/view-analytics/get-intent", method = RequestMethod.POST)
 //	@ResponseStatus(value = HttpStatus.OK)
-//	public void getData() {
+//	public void getIntent(@RequestBody String utterance) {
+//		System.out.println(utterance);
 //		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-//		LionChatDAOImpl dataPoints = (LionChatDAOImpl) context.getBean("LionChatDAOImpl");
-//
-//		// Average ratings.
-//		HashMap<String, AtomicInteger> map = new HashMap<>();
-//		for (DataPointsModel point : dataPoints.getRatings()) {
-//			if (map.containsKey(point.getIntent())) {
-//				map.get(point.getIntent()).addAndGet(point.getRating());
-//			} else {
-//				map.put(point.getIntent(), new AtomicInteger(point.getRating()));
-//			}
-//		}
-//
-//		Gson gsonObj = new Gson();
-//		ModelAndView modelAndView = new ModelAndView("Analytics/AverageRatings");
-//		modelAndView.addObject("title", "Average Ratings");
-//		modelAndView.addObject("dataPoints", gsonObj.toJson(map));
-//		context.close();
-////		return modelAndView;
+//		LionChatDAO dao = (LionChatDAO) context.getBean("LionChatDAOImpl");
+//		dao.addUserRating(new CampusEventsIntent(), Integer.parseInt(utterance));
+////		System.out.println(LionChat.getInstance().getClassifier().getIntentString(utterance));
 //	}
 
 	@RequestMapping(value = "/view-analytics/overall-ratings", method = RequestMethod.GET)
 	public ModelAndView getOverallRatings() {
 		ModelAndView modelAndView = new ModelAndView("Analytics/OverallRatings");
-		LionChatDAO dataPoints;
+		LionChatDAO dao;
 		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
-			dataPoints = (LionChatDAO) context.getBean("LionChatDAOImpl");
+			dao = (LionChatDAO) context.getBean("LionChatDAOImpl");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ModelAndView("Analytics/Error");
 		}
 
 		AtomicInteger total = new AtomicInteger();
-		List<Object> chart = getOverallRatingsMap(dataPoints, total);
+		List<Object> chart = getOverallRatingsMap(dao, total);
 
 		Gson gsonObj = new Gson();
 
@@ -168,39 +87,36 @@ public class AnalyticsController {
 
 	@RequestMapping(value = "/view-analytics/intent-average-ratings", method = RequestMethod.GET)
 	public ModelAndView getAverageRatings() {
-		System.out.println("SUCCESS");
 		ModelAndView modelAndView = new ModelAndView("Analytics/IntentAverageRatings");
-		LionChatDAO dataPoints;
+		LionChatDAO dao;
 		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
-			dataPoints = (LionChatDAO) context.getBean("LionChatDAOImpl");
+			dao = (LionChatDAO) context.getBean("LionChatDAOImpl");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ModelAndView("Analytics/Error");
 		}
 
-		// A mapping from intent to its ratings information.
-		List<Object> chart = getAverageRatingsMap(dataPoints);
+		List<Object> chart = getAverageRatingsMap(dao);
 
 		Gson gsonObj = new Gson();
 		modelAndView.addObject("title", "Intent Average Ratings");
 		modelAndView.addObject("dataPoints", gsonObj.toJson(chart));
-//		System.out.println(gsonObj.toJson(chart));
-//		modelAndView.addObject("data", gsonObj.toJson(list));
+
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "/view-analytics/frequently-asked-questions")
 	public ModelAndView getFrequentlyAskedQuestions() {
 		ModelAndView modelAndView = new ModelAndView("Analytics/FrequentlyAskedQuestions");
-		LionChatDAO dataPoints;
+		LionChatDAO dao;
 		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
-			dataPoints = (LionChatDAO) context.getBean("LionChatDAOImpl");
+			dao = (LionChatDAO) context.getBean("LionChatDAOImpl");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ModelAndView("Analytics/Error");
 		}
 
-		List<Object> chart = getFrequenciesMap(dataPoints);
+		List<Object> chart = getFrequenciesMap(dao);
 
 		Gson gsonObj = new Gson();
 		modelAndView.addObject("title", "Frequently Asked Questions");
@@ -212,15 +128,15 @@ public class AnalyticsController {
 	@RequestMapping(value = "/view-analytics/commonly-misclassified-intents")
 	public ModelAndView getCommonlyMisclassifiedIntent() {
 		ModelAndView modelAndView = new ModelAndView("Analytics/CommonlyMisclassifiedIntents");
-		LionChatDAO dataPoints;
+		LionChatDAO dao;
 		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
-			dataPoints = (LionChatDAO) context.getBean("LionChatDAOImpl");
+			dao = (LionChatDAO) context.getBean("LionChatDAOImpl");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ModelAndView("Analytics/Error");
 		}
 
-		List<Object> chart = getCommonlyMisclassifiedIntentsMap(dataPoints);
+		List<Object> chart = getCommonlyMisclassifiedIntentsMap(dao);
 
 		Gson gsonObj = new Gson();
 		modelAndView.addObject("title", "Commonly Misclassified Intents");
@@ -229,14 +145,14 @@ public class AnalyticsController {
 		return modelAndView;
 	}
 
-	private List<Object> getOverallRatingsMap(LionChatDAO dataPoints) {
-		return this.getOverallRatingsMap(dataPoints, null);
+	private List<Object> getOverallRatingsMap(LionChatDAO dao) {
+		return this.getOverallRatingsMap(dao, null);
 	}
 
-	private List<Object> getOverallRatingsMap(LionChatDAO dataPoints, AtomicInteger passedTotal) {
+	private List<Object> getOverallRatingsMap(LionChatDAO dao, AtomicInteger passedTotal) {
 		int total = 0;
 		Map<Integer, AtomicInteger> map = new HashMap<>();
-		for (IntentRatingsModel point : dataPoints.getRatings()) {
+		for (IntentRatingsModel point : dao.getRatings()) {
 			if (map.containsKey(point.getRating())) {
 				map.get(point.getRating()).addAndGet(point.getRating());
 			} else {
@@ -261,10 +177,10 @@ public class AnalyticsController {
 		return chart;
 	}
 	
-	private List<Object> getAverageRatingsMap(LionChatDAO dataPoints) {
+	private List<Object> getAverageRatingsMap(LionChatDAO dao) {
 		Map<String, AtomicInteger> totalStars = new HashMap<String, AtomicInteger>();
 		Map<String, AtomicInteger> totalRatings = new HashMap<String, AtomicInteger>();
-		for (IntentRatingsModel point : dataPoints.getRatings()) {
+		for (IntentRatingsModel point : dao.getRatings()) {
 			String intent = point.getIntent();
 			int rating = point.getRating();
 
@@ -289,9 +205,9 @@ public class AnalyticsController {
 		return chart;
 	}
 
-	private List<Object> getFrequenciesMap(LionChatDAO dataPoints) {
+	private List<Object> getFrequenciesMap(LionChatDAO dao) {
 		Map<String, AtomicInteger> frequencies = new HashMap<>();
-		for (IntentRatingsModel point : dataPoints.getRatings()) {
+		for (IntentRatingsModel point : dao.getRatings()) {
 			String intent = point.getIntent();
 			if (frequencies.containsKey(intent)) {
 				frequencies.get(intent).incrementAndGet();
@@ -310,9 +226,9 @@ public class AnalyticsController {
 		return chart;
 	}
 	
-	private List<Object> getCommonlyMisclassifiedIntentsMap(LionChatDAO dataPoints) {
+	private List<Object> getCommonlyMisclassifiedIntentsMap(LionChatDAO dao) {
 		Map<String, AtomicInteger> frequencies = new HashMap<>();
-		for (IntentRatingsModel point : dataPoints.getRatings()) {
+		for (IntentRatingsModel point : dao.getRatings()) {
 			if (point.getRating() != 1) {
 				continue;
 			}

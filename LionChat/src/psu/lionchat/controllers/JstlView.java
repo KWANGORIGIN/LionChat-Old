@@ -1,4 +1,4 @@
-package com.canvasjs.controllers;
+package psu.lionchat.controllers;
 
 import java.util.Map;
 
@@ -29,7 +29,6 @@ public class JstlView extends InternalResourceView {
 		// force everything to be template.jsp
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/template.jsp");
 		requestDispatcher.include(request, response);
-
 	}
 
 }
