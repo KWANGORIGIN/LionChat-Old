@@ -16,7 +16,8 @@ public class DateTimeEntity extends Entity {
 	{
 		this.dateTime = new GregorianCalendar();
 		this.entityName = "dateTime";
-		this.prompt = "Please enter the date and time of interest in MM-dd-yyyy format.";
+		this.prompt = "Please enter the date and time of interest in MM-dd-yyyy format or type \"today\" to " +
+				"get today's events:";
 	}
 	@Override
 	public String getEntityInformation() {
