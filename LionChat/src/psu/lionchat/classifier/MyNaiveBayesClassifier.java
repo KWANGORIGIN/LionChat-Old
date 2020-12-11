@@ -46,15 +46,15 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 	public Intent classifyUserIntent(String utterance) {
 		utterance = this.preProcessor.process(utterance);
 		String intentString = this.getIntentString(utterance);
-		
+
 		// TODO: These are not the correct labels.
-		if(utterance.equals("WifiAssistanceIntent")) {
+		if(intentString.equals("WifiAssistanceIntent")) {
 			return new WifiAssistanceIntent();
-		}else if(utterance.equals("CampusEventsIntent")) {
+		}else if(intentString.equals("CampusEventsIntent")) {
 			return new CampusEventsIntent();
-		}else if(utterance.equals("ErieInfoIntent")) {
+		}else if(intentString.equals("ErieInfoIntent")) {
 			return new ErieInfoIntent();
-		}else if(utterance.equals("GreetingIntent"))
+		}else if(intentString.equals("GreetingIntent"))
 		{
 			return new GreetingIntent();
 		}
