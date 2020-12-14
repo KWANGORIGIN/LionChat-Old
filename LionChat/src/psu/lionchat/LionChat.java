@@ -299,11 +299,6 @@ public class LionChat {
 	{
 		return null;
 	}
-
-
-	public ClassifierIF getClassifier() {
-		return classifier;
-	}
 }
 
 enum ConversationState
