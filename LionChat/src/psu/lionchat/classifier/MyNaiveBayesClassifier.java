@@ -11,7 +11,11 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 
 import psu.lionchat.intent.Intent;
-import psu.lionchat.intent.intents.*;
+import psu.lionchat.intent.intents.CampusEventsIntent;
+import psu.lionchat.intent.intents.ErieInfoIntent;
+import psu.lionchat.intent.intents.GreetingIntent;
+import psu.lionchat.intent.intents.UnknownIntent;
+import psu.lionchat.intent.intents.WifiAssistanceIntent;
 
 public class MyNaiveBayesClassifier implements ClassifierIF {
 
