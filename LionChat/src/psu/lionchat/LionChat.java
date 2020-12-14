@@ -87,21 +87,6 @@ public class LionChat {
 		}
 	}
 
-	public void sendResponse(String message) {
-		try {
-			final IdRecipient recipient = IdRecipient.create(currentUserId);
-			final NotificationType notificationType = NotificationType.REGULAR;
-			final String metadata = "DEVELOPER_DEFINED_METADATA";
-
-			final TextMessage textMessage = TextMessage.create(message, empty(), of(metadata));
-			final MessagePayload messagePayload = MessagePayload.create(recipient, MessagingType.RESPONSE, textMessage, of(notificationType), empty());
-			this.messenger.send(messagePayload);
-
-		} catch (MessengerApiException | MessengerIOException e) {
-			System.out.println("Error sending message to user");
-		}
-	}
-
 	private void sendTypingOn(String recipientId){
 		try{
 			this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_ON));
@@ -119,6 +104,21 @@ public class LionChat {
 			e.printStackTrace();
 		}catch(MessengerIOException e){
 			e.printStackTrace();
+		}
+	}
+	
+	public void sendResponse(String message) {
+		try {
+			final IdRecipient recipient = IdRecipient.create(currentUserId);
+			final NotificationType notificationType = NotificationType.REGULAR;
+			final String metadata = "DEVELOPER_DEFINED_METADATA";
+
+			final TextMessage textMessage = TextMessage.create(message, empty(), of(metadata));
+			final MessagePayload messagePayload = MessagePayload.create(recipient, MessagingType.RESPONSE, textMessage, of(notificationType), empty());
+			this.messenger.send(messagePayload);
+
+		} catch (MessengerApiException | MessengerIOException e) {
+			System.out.println("Error sending message to user");
 		}
 	}
 
