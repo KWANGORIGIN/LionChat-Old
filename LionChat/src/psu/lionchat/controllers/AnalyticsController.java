@@ -116,7 +116,7 @@ public class AnalyticsController {
 	}
 
 	@RequestMapping(value = "/view-analytics/commonly-misclassified-intents")
-	public ModelAndView getCommonlyMisclassifiedIntent() {
+	public ModelAndView getCommonlyMisclassifiedIntents() {
 		ModelAndView modelAndView = new ModelAndView("Analytics/CommonlyMisclassifiedIntents");
 		LionChatDAO dao;
 		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {

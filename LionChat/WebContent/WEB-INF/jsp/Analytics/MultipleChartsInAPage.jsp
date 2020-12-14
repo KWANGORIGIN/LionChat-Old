@@ -71,10 +71,7 @@ $(function () {
     });
 	chart[0].options.data[0].dataPoints.sort(compareDataPointYDescending);
 	chart[0].render();
-
-	colors.map((a) => ({sort: Math.random(), value: a}))
-			.sort((a, b) => a.sort - b.sort)
-			.map((a) => a.value);
+	
 	chart[1] = new CanvasJS.Chart("chartContainer2", {
 		colorSet: [
 			"blues"
@@ -108,9 +105,6 @@ $(function () {
     });
 	chart[1].render();
 
-	colors.map((a) => ({sort: Math.random(), value: a}))
-			.sort((a, b) => a.sort - b.sort)
-			.map((a) => a.value);
 	chart[2] = new CanvasJS.Chart("chartContainer3", {
 		colorSet: [
 			"blues"
@@ -134,10 +128,6 @@ $(function () {
     });
 	chart[2].options.data[0].dataPoints.sort(compareDataPointYDescending);
 	chart[2].render();
-
-	colors.map((a) => ({sort: Math.random(), value: a}))
-			.sort((a, b) => a.sort - b.sort)
-			.map((a) => a.value);
 
 	chart[3] = new CanvasJS.Chart("chartContainer4", {
 		colorSet: [
