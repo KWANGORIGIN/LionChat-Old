@@ -24,9 +24,7 @@ import psu.lionchat.model.IntentRatingsModel;
 import psu.lionchat.service.IntentRatingsMapper;
 
 public class LionChatDAOImpl implements LionChatDAO {
-	// TODO: Bind this with a bean.
 	private DataSource dataSource;
-	// TODO: Initialize this somehow.
 	private JdbcTemplate jdbcTemplateObject;
 
 	@Override
