@@ -42,13 +42,6 @@ public class LionChat {
 	private String document;
 	private String currentUserId;
 
-	@RequestMapping(value = "/get-intent", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.OK)
-	public void getIntent(@RequestBody String utterance) {
-		System.out.println(utterance);
-		System.out.println(this.getClassifier().getIntentString(utterance));
-	}
-
 	@Autowired
 	public LionChat() {
 		classifier = new MyNaiveBayesClassifier();
