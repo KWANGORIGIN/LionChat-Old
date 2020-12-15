@@ -1,9 +1,5 @@
 package psu.lionchat.dao;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -33,6 +29,7 @@ class LionChatDAOImplTest {
 		intent.getEntities().get(0).setEntityInformation("windows");
 		expected = "Download the Penn State configuration file or the Eduroam configuration file. Double-Click the downloaded file. Click Continue. Enter your Access Account userID (or userID@psu.edu for Eduroam) and password. Click Install. Enter local user password when prompted. The profile is now installed. Wireless for PSU or Eduroam is now configured";
 		assert(s.equals(expected));
+		context.close();
 	}
 
 	@Test

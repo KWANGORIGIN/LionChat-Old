@@ -11,6 +11,9 @@ public class ErieInfoIntent extends Intent {
 		this.URL = "https://www.google.com/search?q=";
 	}
 
+	/**
+	 * Get the URL which answers the user's question.
+	 * */
 	public String getURL()
 	{
 		return this.URL;

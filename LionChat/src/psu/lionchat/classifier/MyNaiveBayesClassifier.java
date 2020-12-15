@@ -26,6 +26,11 @@ public class MyNaiveBayesClassifier implements ClassifierIF {
 		preProcessor = new PreProcessor();
 	}
 
+	/**
+	 * Get the intent for the utterance by sending a HTTP request to 
+	 * intent endpoint of the Python server running on http://localhost:8000.
+	 * The intent is the goal the user wants to accomplish by asking a question.
+	 * */
 	@Override
 	public String getIntentString(String utterance) {
 		RestTemplate restTemplate = new RestTemplate();

@@ -40,6 +40,9 @@ public class DateTimeEntity extends Entity {
 		return timeString;
 	}
 
+	/**
+	 * Convert the date stored in this entity to a database readable format.
+	 * */
 	public Timestamp getTimestamp()
 	{
 		return new Timestamp(this.dateTime.getTimeInMillis());

@@ -8,8 +8,8 @@ public interface ClassifierIF {
 	 * wants to accomplish by asking a question.
 	 * 
 	 * Example: Help, my computer exploded! Intent: itHelp.
-	 * @param utterance The question the user asks.
-	 * @return The intent of the users question, as a string.
+	 * @param utterance - the question the user asks.
+	 * @return the intent of the users question, as a string.
 	 * */
 	public String getIntentString(String utterance);
 	

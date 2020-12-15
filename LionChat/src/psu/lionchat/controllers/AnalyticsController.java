@@ -8,24 +8,24 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
-import psu.lionchat.LionChat;
 import psu.lionchat.dao.LionChatDAO;
-import psu.lionchat.intent.intents.CampusEventsIntent;
 import psu.lionchat.model.IntentRatingsModel;
 
 @Controller
 public class AnalyticsController {
+	/**
+	 * Get the home page of LionChat.
+	 * @return the model with the data for the charts (dataPoints1,2,3,4) 
+	 * and the view (Analytics/MultipleChartsInAPage) to display.
+	 * */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView getHomePage(ModelMap model) {
 		ModelAndView modelAndView = new ModelAndView("Analytics/MultipleChartsInAPage");
@@ -52,6 +52,12 @@ public class AnalyticsController {
 		return modelAndView;
 	}
 
+	/**
+	 * Get the overall ratings of LionChat. This is a pie chart with 
+	 * the percentage of 1/2/3/4/5 star ratings out of the total for each slice.
+	 * @return the model with the data for the pie chart (dataPoints)
+	 * and the view (Analytics/OverallRatings) to display.
+	 * */
 	@RequestMapping(value = "/view-analytics/overall-ratings", method = RequestMethod.GET)
 	public ModelAndView getOverallRatings() {
 		ModelAndView modelAndView = new ModelAndView("Analytics/OverallRatings");
@@ -75,6 +81,11 @@ public class AnalyticsController {
 		return modelAndView;
 	}
 
+	/**
+	 * Get each intents average rating (out of 5 stars) for LionChat.
+	 * @return the model with the data for the column chart (dataPoints)
+	 * and the view (Analytics/IntentAverageRatings) to display.
+	 * */
 	@RequestMapping(value = "/view-analytics/intent-average-ratings", method = RequestMethod.GET)
 	public ModelAndView getAverageRatings() {
 		ModelAndView modelAndView = new ModelAndView("Analytics/IntentAverageRatings");
@@ -95,6 +106,12 @@ public class AnalyticsController {
 		return modelAndView;
 	}
 
+	/**
+	 * Get the frequently asked questions for LionChat. This is a column chart
+	 * measuring the frequency of each intent.
+	 * @return the model with the data for the column chart (dataPoints)
+	 * and the view (Analytics/FrequentlyAskedQuestions) to display.
+	 * */
 	@RequestMapping(value = "/view-analytics/frequently-asked-questions")
 	public ModelAndView getFrequentlyAskedQuestions() {
 		ModelAndView modelAndView = new ModelAndView("Analytics/FrequentlyAskedQuestions");
@@ -115,6 +132,12 @@ public class AnalyticsController {
 		return modelAndView;
 	}
 
+	/**
+	 * Gets the intents which are commonly misclassified by displaying 
+	 * their number of 1 star ratings.
+	 * @return the model with the data for the column chart (dataPoints)
+	 * and the view (Analytics/CommonlyMisclassifiedIntents) to display.
+	 * */
 	@RequestMapping(value = "/view-analytics/commonly-misclassified-intents")
 	public ModelAndView getCommonlyMisclassifiedIntents() {
 		ModelAndView modelAndView = new ModelAndView("Analytics/CommonlyMisclassifiedIntents");
@@ -135,10 +158,19 @@ public class AnalyticsController {
 		return modelAndView;
 	}
 
+	/**
+	 * Gets the data for the overall ratings chart.
+	 * @param dao - the database access object to use to obtain the data.
+	 * */
 	private List<Object> getOverallRatingsMap(LionChatDAO dao) {
 		return this.getOverallRatingsMap(dao, null);
 	}
 
+	/**
+	 * Gets the data for the overall ratings chart.
+	 * @param dao - the database access object to use to obtain the data.
+	 * @param passedTotal - the variable to store the total number of ratings to.
+	 * */
 	private List<Object> getOverallRatingsMap(LionChatDAO dao, AtomicInteger passedTotal) {
 		int total = 0;
 		Map<Integer, AtomicInteger> map = new HashMap<>();
@@ -167,6 +199,10 @@ public class AnalyticsController {
 		return chart;
 	}
 	
+	/**
+	 * Gets the data for the average ratings chart.
+	 * @param dao - the database access object to use to obtain the data.
+	 * */
 	private List<Object> getAverageRatingsMap(LionChatDAO dao) {
 		Map<String, AtomicInteger> totalStars = new HashMap<String, AtomicInteger>();
 		Map<String, AtomicInteger> totalRatings = new HashMap<String, AtomicInteger>();
@@ -195,6 +231,10 @@ public class AnalyticsController {
 		return chart;
 	}
 
+	/**
+	 * Gets the data for the frequencies chart (for frequently asked questions).
+	 * @param dao - the database access object to use to obtain the data.
+	 * */
 	private List<Object> getFrequenciesMap(LionChatDAO dao) {
 		Map<String, AtomicInteger> frequencies = new HashMap<>();
 		for (IntentRatingsModel point : dao.getRatings()) {
@@ -216,6 +256,10 @@ public class AnalyticsController {
 		return chart;
 	}
 	
+	/**
+	 * Gets the data for the commonly misclassified intents chart.
+	 * @param dao - the database access object to use to obtain the data.
+	 * */
 	private List<Object> getCommonlyMisclassifiedIntentsMap(LionChatDAO dao) {
 		Map<String, AtomicInteger> frequencies = new HashMap<>();
 		for (IntentRatingsModel point : dao.getRatings()) {
