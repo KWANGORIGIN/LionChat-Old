@@ -2,13 +2,13 @@
 
 ## Team Members
 
-- **William Hemminger (wzh44@psu.edu)
+- **William Hemminger (wzh44@psu.edu)**
   - Software Engineering, Computer Engineering Minor
   - Junior @ Penn State Behrend
-- **Jacob Karabin (jxk5861@psu.edu)
+- **Jacob Karabin (jxk5861@psu.edu)**
   - Software Engineering, Mathematics
   - Junior @ Penn State Behrend
-- **Kevin Wang (kvw5720@psu.edu)
+- **Kevin Wang (kvw5720@psu.edu)**
   - Software Engineering, Mathematics
   - Junior @ Penn State Behrend
   
