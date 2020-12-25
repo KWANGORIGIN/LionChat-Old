@@ -2,6 +2,12 @@
 
 # A Chatbot for all things Penn State
 
+## Team Members
+
+-Jacob Karabin
+-William Hemminger
+-Kevin Wang
+
 ### Product Context:
 
 Students at Penn State Behrend often have questions on topics such as connecting to the campus Wi-Fi network and which events they should attend to add to their college experience. This software will provide to students a resource with which they can quickly receive the answers to these queries, reducing the workload for IT help desk employees and Welcome Week staff.
