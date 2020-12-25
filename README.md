@@ -48,7 +48,7 @@ The user will ask the system a question through the messenger interface. The cla
 
 ### Ask Question Activity Diagram
 
-![Ask Question Activity Diagram](https://github.com/KWANGORIGIN/LionChat/blob/main/imgs/Asking%20Question%20Sequence%20Diagram.png)
+![Ask Question Activity Diagram](https://github.com/KWANGORIGIN/LionChat/blob/main/imgs/Ask%20Question%20Activity%20Diagram.png)
 
 ### Structural/Class Diagram
 
