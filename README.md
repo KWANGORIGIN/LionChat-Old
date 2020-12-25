@@ -12,4 +12,4 @@ This chatbot system, LionChat, will be accessed by users over the Facebook Messe
 
 The software will determine the user’s intent and retrieve the relevant information from an SQL database. The answer response time per asker query should be a maximum of 10 seconds.  Relevant analytics information such as user ratings, frequently asked questions, and incorrectly classified questions will be retrieved from the database and displayed on a webpage for the administrator users.
 
-![Use Case Diagram](imgs/UML Case Diagram.png)
+![Use Case Diagram](https://github.com/KWANGORIGIN/LionChat/blob/main/imgs/UML%20Case%20Diagram.png)
