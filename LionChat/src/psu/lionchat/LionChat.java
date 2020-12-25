@@ -1,5 +1,23 @@
 package psu.lionchat;
 
+import static com.github.messenger4j.Messenger.CHALLENGE_REQUEST_PARAM_NAME;
+import static com.github.messenger4j.Messenger.MODE_REQUEST_PARAM_NAME;
+import static com.github.messenger4j.Messenger.SIGNATURE_HEADER_NAME;
+import static com.github.messenger4j.Messenger.VERIFY_TOKEN_REQUEST_PARAM_NAME;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.github.messenger4j.Messenger;
 import com.github.messenger4j.exception.MessengerApiException;
 import com.github.messenger4j.exception.MessengerIOException;
@@ -12,13 +30,7 @@ import com.github.messenger4j.send.message.TextMessage;
 import com.github.messenger4j.send.recipient.IdRecipient;
 import com.github.messenger4j.send.senderaction.SenderAction;
 import com.github.messenger4j.webhook.event.TextMessageEvent;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+
 import psu.lionchat.classifier.ClassifierIF;
 import psu.lionchat.classifier.MyNaiveBayesClassifier;
 import psu.lionchat.dao.LionChatDAO;
@@ -27,10 +39,6 @@ import psu.lionchat.intent.Intent;
 import psu.lionchat.intent.intents.ErieInfoIntent;
 import psu.lionchat.intent.intents.GreetingIntent;
 import psu.lionchat.intent.intents.UnknownIntent;
-
-import static com.github.messenger4j.Messenger.*;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 
 @RestController
 @RequestMapping("/lionchat")
@@ -42,13 +50,6 @@ public class LionChat {
 	private String document;
 	private String currentUserId;
 
-	@RequestMapping(value = "/get-intent", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.OK)
-	public void getIntent(@RequestBody String utterance) {
-		System.out.println(utterance);
-		System.out.println(this.getClassifier().getIntentString(utterance));
-	}
-
 	@Autowired
 	public LionChat() {
 		classifier = new MyNaiveBayesClassifier();
@@ -58,6 +59,9 @@ public class LionChat {
 		this.messenger = Messenger.create("PAGE_ACCESS_TOKEN", "APP_SECRET", "VERIFY_TOKEN");
 	}
 
+	/**
+	 * Verify the webhook for Facebook Messenger. This is needed to communicate with Facebook Messenger.
+	 * */
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<String> verifyWebhook(@RequestParam(MODE_REQUEST_PARAM_NAME) final String mode,
 												@RequestParam(VERIFY_TOKEN_REQUEST_PARAM_NAME) final String verifyToken,
@@ -72,6 +76,9 @@ public class LionChat {
 		}
 	}
 
+	/**
+	 * Called when a message is received from Facebook Messenger.
+	 * */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> receiveMessage(@RequestBody final String payload, @RequestHeader(SIGNATURE_HEADER_NAME) final String signature) {
 		try {
@@ -94,6 +101,36 @@ public class LionChat {
 		}
 	}
 
+	/**
+	 * Send the typing indicator to the user to indicate LionChat is sending a response.
+	 * */
+	private void sendTypingOn(String recipientId){
+		try{
+			this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_ON));
+		}catch(MessengerApiException e){
+			e.printStackTrace();
+		}catch(MessengerIOException e){
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Turns off the typing indicator when LionChat is done typing a message.
+	 * */
+	private void sendTypingOff(String recipientId){
+		try{
+			this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_OFF));
+		}catch(MessengerApiException e){
+			e.printStackTrace();
+		}catch(MessengerIOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Send a response to the user through Facebook Messenger with the Messenger4J API.
+	 * @param message - the message to be send.
+	 * */
 	public void sendResponse(String message) {
 		try {
 			final IdRecipient recipient = IdRecipient.create(currentUserId);
@@ -109,26 +146,10 @@ public class LionChat {
 		}
 	}
 
-	private void sendTypingOn(String recipientId){
-		try{
-			this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_ON));
-		}catch(MessengerApiException e){
-			e.printStackTrace();
-		}catch(MessengerIOException e){
-			e.printStackTrace();
-		}
-	}
-
-	private void sendTypingOff(String recipientId){
-		try{
-			this.messenger.send(SenderActionPayload.create(recipientId, SenderAction.TYPING_OFF));
-		}catch(MessengerApiException e){
-			e.printStackTrace();
-		}catch(MessengerIOException e){
-			e.printStackTrace();
-		}
-	}
-
+	/**
+	 * Get the response to the users message (usually a question).
+	 * @param message - the users message.
+	 * */
 	public void getResponse(String message)
 	{
 		//code runs depending on current conversation state
@@ -228,6 +249,12 @@ public class LionChat {
 
 	}
 
+	/**
+	 * Fill in the entity information by parsing message, and
+	 * potentially ask the user to fill in additional information.
+	 * @param message - the user's message that may contain entity information.
+	 * @return - the prompt to send the user to indicate they need to fill in more information.
+	 * */
 	public String getEntityInfoFromUser(String message)
 	{
 		//loop through each entity in userIntent
@@ -263,6 +290,11 @@ public class LionChat {
 		return message;
 	}
 
+	/**
+	 * Stores a 5 star rating into the database.
+	 * @param intent - the intent of the user's question.
+	 * @param rating - the 5 star rating of the user's review.
+	 * */
 	public void storeRating(Intent intent, int rating)
 	{
 		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml")) {
@@ -273,6 +305,11 @@ public class LionChat {
 		}
 	}
 
+	/**
+	 * Get the answer to the user's question from the database.
+	 * @param intent - the questions intent.
+	 * @param message - the original message the user sent.
+	 * */
 	public void getAnswer(Intent intent, String message)
 	{
 		if(intent instanceof ErieInfoIntent)
@@ -295,24 +332,12 @@ public class LionChat {
 			}
 		}
 	}
-
-
-	public ModelAndView getHomePage(ModelMap model)
-	{
-		return null;
-	}
-
-	public ModelAndView GetAnalyticsPage(ModelMap model)
-	{
-		return null;
-	}
-
-
-	public ClassifierIF getClassifier() {
-		return classifier;
-	}
 }
 
+/**
+ * The state of the conversation. This is used to determine the 
+ * way that LionChat should respond to the user's question.
+ * */
 enum ConversationState
 {
 	INTENTSTATE,

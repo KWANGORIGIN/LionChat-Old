@@ -10,6 +10,9 @@ import org.springframework.web.servlet.view.InternalResourceView;
 
 public class JstlView extends InternalResourceView {
 
+	/**
+	 * Used for filtering data from the model to allow only relevant data to be passed to the view.
+	 * */
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

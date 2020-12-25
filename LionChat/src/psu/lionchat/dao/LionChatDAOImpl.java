@@ -3,10 +3,8 @@ package psu.lionchat.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import javax.sql.DataSource;
 
@@ -24,9 +22,7 @@ import psu.lionchat.model.IntentRatingsModel;
 import psu.lionchat.service.IntentRatingsMapper;
 
 public class LionChatDAOImpl implements LionChatDAO {
-	// TODO: Bind this with a bean.
 	private DataSource dataSource;
-	// TODO: Initialize this somehow.
 	private JdbcTemplate jdbcTemplateObject;
 
 	@Override

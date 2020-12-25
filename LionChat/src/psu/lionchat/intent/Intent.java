@@ -1,7 +1,5 @@
 package psu.lionchat.intent;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +13,9 @@ public abstract class Intent {
 		entities = new ArrayList<>();
 	}
 
+	/**
+	 * Get the entities for this intent as a list.
+	 * */
 	public List<Entity> getEntities() {
 		return entities;
 	}
