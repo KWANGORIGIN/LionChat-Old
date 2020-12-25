@@ -9,7 +9,7 @@
   - Software Engineering, Mathematics
   - Junior @ Penn State Behrend
 - Kevin Wang (kvw5720@psu.edu)
-  - Software Engineering, Mathematics @ Penn State Behrend
+  - Software Engineering, Mathematics
   - Junior @ Penn State Behrend
   
 ## Introduction
@@ -40,11 +40,15 @@ This software uses the MVC, or Model View Controller software architecture.  The
 
 ## Key Functionality Design
 
-### Ask Question Processing Sequence
+### Ask Question Processing Sequence Diagram
 
 The user will ask the system a question through the messenger interface. The classifier determines the intent for the question with the classifier running on the python server through the REST interface. Then, the system asks the user questions for each entity associated with the intent. The user answers the questions, and the system responds with a document from the database representing the answer.
 
 ![Ask Question Sequence Diagram](https://github.com/KWANGORIGIN/LionChat/blob/main/imgs/Asking%20Question%20Sequence%20Diagram.png)
+
+### Ask Question Activity Diagram
+
+![Ask Question Activity Diagram](https://github.com/KWANGORIGIN/LionChat/blob/main/imgs/Asking%20Question%20Sequence%20Diagram.png)
 
 ### Structural/Class Diagram
 
