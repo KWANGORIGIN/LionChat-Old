@@ -4,9 +4,9 @@
 
 ## Team Members
 
--Jacob Karabin
--William Hemminger
--Kevin Wang
+- Jacob Karabin
+- William Hemminger
+- Kevin Wang
 
 ### Product Context:
 
