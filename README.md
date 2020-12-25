@@ -4,9 +4,9 @@
 
 ## Team Members
 
-- Jacob Karabin // jxk5861@psu.edu
-- William Hemminger // wzh44@psu.edu
-- Kevin Wang // kvw5720@psu.edu
+- Jacob Karabin//jxk5861@psu.edu
+- William Hemminger//wzh44@psu.edu
+- Kevin Wang//kvw5720@psu.edu
 
 ### Product Context:
 
