@@ -53,3 +53,17 @@ The user will ask the system a question through the messenger interface. The cla
 ### Structural/Class Diagram
 
 ![Class Diagram](https://github.com/KWANGORIGIN/LionChat/blob/main/imgs/Class%20Diagram.png)
+
+## User Interface Design
+
+### Administrative Website Home Page
+
+The home page allows a user to navigate to either the view analytics or settings pages. By default, it will display all the charts which can be shown on the view analytics page. One chart will show the average rating out of 5 stars. Another chart will display the most frequently asked questions by displaying the number of questions asked for each intent. The third chart will display the intents which are commonly misclassified. The fourth chart will be a pie chart which shows the average overall rating. 
+
+![Home Page](https://github.com/KWANGORIGIN/LionChat/blob/main/imgs/Main%20menu.png)
+
+### Expanded Data Page
+
+Clicking on a chart will show the expanded data page for the chart, where the chart is enlarged and easier to read. The sidebar can be used to navigate to any page on the website. The view analytics page contains graphs which display analytics information. The charts displayed will be enlarged versions of the four charts seen on the home page. The page will allow the user to switch which chart is displayed and can easily navigate home with the sidebar.
+
+![Expanded Data Page](https://github.com/KWANGORIGIN/LionChat/blob/main/imgs/Expanded%20Data%20Page.png)
