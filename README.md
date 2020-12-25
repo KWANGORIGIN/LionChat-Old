@@ -1,6 +1,4 @@
-# LionChat: 
-
-# A Chatbot for all things Penn State
+# LionChat: A Chatbot for all things Penn State
 
 ## Team Members
 
