@@ -1,5 +1,7 @@
 # LionChat: A Chatbot for all things Penn State
 
+![Use Case Diagram](https://github.com/KWANGORIGIN/LionChat/blob/main/imgs/LionChat%20Logo.png)
+
 ## Team Members
 
 - **William Hemminger (wzh44@psu.edu)**
