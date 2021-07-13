@@ -7,11 +7,16 @@ import static com.github.messenger4j.Messenger.VERIFY_TOKEN_REQUEST_PARAM_NAME;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -62,6 +67,28 @@ public class LionChat {
 		convState = ConversationState.INTENTSTATE;
 		document = "";
 
+		Thread pythonServer = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					File classifier = new File("C:\\Users\\jjkar\\git\\LionChat\\LionChat\\Classifier\\Classifier.py");
+					String command = String.format("python %s", classifier.getAbsolutePath());
+
+					// Run classifier from its parent directory as a python file.
+					Process p = Runtime.getRuntime().exec(command, null, classifier.getParentFile());
+					try {
+						p.waitFor();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+		});
+		pythonServer.start();
+
 		Map<String, String> tokensMap = new HashMap<>();
 		File f = new File(System.getProperty("user.home") + "\\Desktop\\LionChat Tokens.txt");
 		try (Scanner sc = new Scanner(f)) {
@@ -75,7 +102,7 @@ public class LionChat {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		final String PAGE_ACCESS_TOKEN = tokensMap.get("PAGE_ACCESS_TOKEN");
 		final String APP_SECRET = tokensMap.get("APP_SECRET");
 		final String VERIFY_TOKEN = tokensMap.get("VERIFY_TOKEN");
