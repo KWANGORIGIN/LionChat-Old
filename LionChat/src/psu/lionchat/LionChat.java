@@ -106,7 +106,7 @@ public class LionChat {
 		final String pageAccessToken = tokensMap.get("PAGE_ACCESS_TOKEN");
 		final String appSecret = tokensMap.get("APP_SECRET");
 		final String verifyToken = tokensMap.get("VERIFY_TOKEN");
-
+		
 		this.messenger = Messenger.create(pageAccessToken, appSecret, verifyToken);
 	}
 
@@ -200,6 +200,7 @@ public class LionChat {
 
 		} catch (MessengerApiException | MessengerIOException e) {
 			System.out.println("Error sending message to user");
+			e.printStackTrace();
 		}
 	}
 
