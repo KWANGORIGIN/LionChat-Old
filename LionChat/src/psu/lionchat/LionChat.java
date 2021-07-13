@@ -103,11 +103,11 @@ public class LionChat {
 			e.printStackTrace();
 		}
 
-		final String PAGE_ACCESS_TOKEN = tokensMap.get("PAGE_ACCESS_TOKEN");
-		final String APP_SECRET = tokensMap.get("APP_SECRET");
-		final String VERIFY_TOKEN = tokensMap.get("VERIFY_TOKEN");
+		final String pageAccessToken = tokensMap.get("PAGE_ACCESS_TOKEN");
+		final String appSecret = tokensMap.get("APP_SECRET");
+		final String verifyToken = tokensMap.get("VERIFY_TOKEN");
 
-		this.messenger = Messenger.create(PAGE_ACCESS_TOKEN, APP_SECRET, VERIFY_TOKEN);
+		this.messenger = Messenger.create(pageAccessToken, appSecret, verifyToken);
 	}
 
 	/**
