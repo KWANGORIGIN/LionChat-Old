@@ -6,13 +6,13 @@
 
 - **William Hemminger (wzh44@psu.edu)**
   - Software Engineering
-  - Completed project as a Junior @ Penn State Behrend
+  - Completed project as a third-year @ Penn State Behrend
 - **Jacob Karabin (jxk5861@psu.edu)**
   - Software Engineering, Mathematics
-  - Completed project as a Junior @ Penn State Behrend
+  - Completed project as a third-year @ Penn State Behrend
 - **Kevin Wang (kvw5720@psu.edu)**
   - Software Engineering, Mathematics
-  - Completed project as a Junior @ Penn State Behrend
+  - Completed project as a third-year @ Penn State Behrend
   
 ## Introduction
 
